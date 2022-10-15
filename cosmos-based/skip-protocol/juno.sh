@@ -1,6 +1,6 @@
 #!/bin/bash
 
-curl -s https://github.com/jambulmerah/guide-testnet/blob/main/script/logo.sh | bash
+curl -s https://raw.githubusercontent.com/jambulmerah/guide-testnet/main/script/logo.sh | bash
 
 sleep 2
 
@@ -55,15 +55,17 @@ if ! [ -x "$(command -v go)" ]; then
   source ~/.bash_profile
 fi
 
-echo -e "\e[1m\e[32m3. Downloading and building binaries... \e[0m" && sleep 1
+echo -e "\e[1m\e[32m3. Downloading and building binaries... \e[0m" &&
+sleep 1
+
 # download binary
 cd $HOME
-
 git clone https://github.com/CosmosContracts/juno
 cd juno
 git fetch
 git checkout $BINARY_TAG
-sed -i.bak -e '132igithub.com/tendermint/tendermint => github.com/skip-mev/mev-tendermint v0.34.21-mev.3' go.mod
+sed -i.bak -e '130 i \\tgithub.com\/tendermint\/tendermint => github.com\/skip-mev\/mev-tendermint v0.34.21-mev.3' go.mod
+go mod tidy
 make install
 
 # config
@@ -104,7 +106,9 @@ sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.juno/config/config.to
 # reset
 junod tendermint unsafe-reset-all --home $HOME/.juno
 
-echo -e "\e[1m\e[32m4. Starting service... \e[0m" && sleep 1
+echo -e "\e[1m\e[32m4. Starting service... \e[0m" &&
+sleep 1
+
 # create service
 sudo tee /etc/systemd/system/junod.service > /dev/null <<EOF
 [Unit]
