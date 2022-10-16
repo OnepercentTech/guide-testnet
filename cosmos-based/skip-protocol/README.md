@@ -40,13 +40,13 @@ sudo systemctl restart junod
 ```
 ### Cek versi
 ```
-quicksilverd status 2>&1 | jq .NodeInfo
+junod status 2>&1 | jq .NodeInfo
 ```
 > **NOTE**: pastikan **"network"**:`"uni-5"` dan **version**:`"version": "v0.34.21-mev.3"`
 
 ### Cek sync info
 ```
-quicksilverd status 2>&1 | jq .SyncInfo
+junod status 2>&1 | jq .SyncInfo
 ```
 ### Cek log
 
