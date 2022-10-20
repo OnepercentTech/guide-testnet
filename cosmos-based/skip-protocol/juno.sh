@@ -64,7 +64,7 @@ git clone https://github.com/CosmosContracts/juno
 cd juno
 git fetch
 git checkout $BINARY_TAG
-sed -i.bak -e '130 i \\tgithub.com\/tendermint\/tendermint => github.com\/skip-mev\/mev-tendermint v0.34.21-mev.5' go.mod
+sed -i.bak -e '132 i \\tgithub.com\/tendermint\/tendermint => github.com\/skip-mev\/mev-tendermint v0.34.21-mev.5' go.mod
 go mod tidy
 make install
 
