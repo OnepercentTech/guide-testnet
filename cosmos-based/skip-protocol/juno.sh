@@ -67,6 +67,7 @@ git checkout $BINARY_TAG
 sed -i.bak -e '132 i \\tgithub.com\/tendermint\/tendermint => github.com\/skip-mev\/mev-tendermint v0.34.21-mev.5' go.mod
 go mod tidy
 make install
+cd $HOME
 if [[ $(type junod 2> /dev/null) ]]; then
     mv go/bin/junod $(which junod)
 else
