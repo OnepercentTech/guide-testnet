@@ -3,7 +3,7 @@
 **Versi saat ini**
 
 - **network/chain-id** : `uni-5`
-- **version**: `v0.34.21-mev.3`
+- **version**: `v0.34.21-mev.5`
 
 ## Official links
 
