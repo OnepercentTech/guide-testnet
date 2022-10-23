@@ -11,13 +11,22 @@ reset="\e[m"
 
 # Env Vars
 cd $HOME
-PATH=""$PATH":"$HOME"/inery-node/inery/bin:"$HOME"/inery-node/inery.setup/master.node"
-inerylog=""$HOME"/inery-node/inery.setup/master.node/blockchain/nodine.log"
+source .bash_profile
 invalid_input=""$bold""$merah"Invalid input "$REPLY". Please select yes or no\n"$reset""
 invalid_format=""$bold""$merah"Format is not correct$reset\n"
 format=""$bold""$UL""$hijau""
 continue=""$hijau""$bold"Press enter to continue"$reset""
 bline="======================================================================="
+PEERS='--p2p-peer-address 135.181.133.169:9010 \\\n --p2p-peer-address 193.111.198.52:9010 \\\n --p2p-peer-address 185.144.99.30:9010 \\\n --p2p-peer-address 192.46.226.189:9010 \\\n --p2p-peer-address 144.91.99.67:9010 \\\n --p2p-peer-address 167.235.3.147:9010 \\\n --p2p-peer-address  45.84.138.118:9010 \\\n --p2p-peer-address 185.249.225.183:9010 \\\n --p2p-peer-address 38.242.235.150:9010 \\\n --p2p-peer-address  161.97.153.16:9010:9010 \\\n --p2p-peer-address   45.84.138.209:9010 \\\n --p2p-peer-address  38.242.248.157:9010 \\\n --p2p-peer-address 45.88.188.199:9010 \\\n --p2p-peer-address 5.189.138.167:9010 \\\n --p2p-peer-address 38.242.234.139:9010 \\\n --p2p-peer-address 86.48.0.180:9010 \\\n --p2p-peer-address 185.169.252.86:9010 \\\n --p2p-peer-address 38.242.130.28:9010 \\\n --p2p-peer-address 95.217.134.209:9010 \\\n --p2p-peer-address 78.46.123.82:9010 \\\n --p2p-peer-address 161.97.153.16:9010 \\\n --p2p-peer-address 38.242.154.67:9010 \\\n --p2p-peer-address 45.10.154.235:9010 \\\n --p2p-peer-address 45.84.138.8:9010 \\\n --p2p-peer-address 45.84.138.118:9010 \\\n --p2p-peer-address 38.242.248.157:9010 \\\n --p2p-peer-address 45.84.138.209:9010 \\\n --p2p-peer-address 95.217.236.223:9010 \\\n --p2p-peer-address 86.48.2.195:9010 \\\n --p2p-peer-address 135.181.254.255:9010 \\\n --p2p-peer-address 5.161.118.114:9010 \\\n --p2p-peer-address 78.47.159.172:9010 \\\n --p2p-peer-address 45.10.154.239:9010 \\\n --p2p-peer-address 45.84.138.9:9010 \\\n --p2p-peer-address 194.163.172.119:9010 \\\n --p2p-peer-address 45.84.138.119:9010 \\\n --p2p-peer-address 45.84.138.153:9010 \\\n --p2p-peer-address 130.185.118.73:9010 \\\n --p2p-peer-address 45.84.138.247:9010 \\\n --p2p-peer-address 80.65.211.208:9010 \\\n --p2p-peer-address 149.102.140.38:9010 \\\n --p2p-peer-address 38.242.149.97:9010 \\\n --p2p-peer-address 38.242.156.49:9010 \\\n --p2p-peer-address 38.242.159.125:9010 \\\n --p2p-peer-address 74.208.142.87:9010 \\\n --p2p-peer-address 38.242.235.150:9010 \\\n --p2p-peer-address 10.182.0.15:9010 \\\n --p2p-peer-address 185.249.225.183:9010 \\\n --p2p-peer-address 194.163.162.47:9010 \\\n --p2p-peer-address 193.46.243.16:9010 \\\n --p2p-peer-address 38.242.159.140:9010 \\\n --p2p-peer-address 161.97.169.27:9010 \\\n --p2p-peer-address 38.242.219.100:9010 \\\n --p2p-peer-address bis.blockchain-servers.world:9010 \\\n --p2p-peer-address sys.blockchain-servers.world:9010 \\\n --p2p-peer-address 193.111.198.52 \\\n --p2p-peer-address 62.210.245.223 \\\n --p2p-peer-address 185.144.99.30 \\\n --p2p-peer-address 38.242.153.15 \\\n --p2p-peer-address 192.46.226.189 \\\n --p2p-peer-address 194.5.152.187 \\\n --p2p-peer-address 5.189.138.167:9010 \\\n --p2p-peer-address 38.242.234.139:9010 \\\n --p2p-peer-address 86.48.0.180:9010 \\\n --p2p-peer-address 185.169.252.86:9010 \\\n --p2p-peer-address 38.242.130.28:9010 \\\n --p2p-peer-address 95.217.134.209:9010 \\\n --p2p-peer-address 78.46.123.82:9010 \\\n --p2p-peer-address 161.97.153.16:9010 \\\n --p2p-peer-address 38.242.154.67:9010 \\\n --p2p-peer-address 45.10.154.235:9010 \\\n --p2p-peer-address 45.84.138.8:9010 \\\n --p2p-peer-address 45.84.138.118:9010 \\\n --p2p-peer-address 38.242.248.157:9010 \\\n --p2p-peer-address 45.84.138.209:9010 \\\n --p2p-peer-address 95.217.236.223:9010 \\\n --p2p-peer-address 86.48.2.195:9010 \\\n --p2p-peer-address 135.181.254.255:9010 \\\n --p2p-peer-address 5.161.118.114:9010 \\\n --p2p-peer-address 78.47.159.172:9010 \\\n --p2p-peer-address 45.10.154.239:9010 \\\n --p2p-peer-address 45.84.138.9:9010 \\\n --p2p-peer-address 194.163.172.119:9010 \\\n --p2p-peer-address 45.84.138.119:9010 \\\n --p2p-peer-address 45.84.138.153:9010 \\\n --p2p-peer-address 130.185.118.73:9010 \\\n --p2p-peer-address 45.84.138.247:9010 \\\n --p2p-peer-address 80.65.211.208:9010 \\\n --p2p-peer-address 149.102.140.38:9010 \\\n --p2p-peer-address 38.242.149.97:9010 \\\n --p2p-peer-address 38.242.156.49:9010 \\\n --p2p-peer-address 38.242.159.125:9010 \\\n --p2p-peer-address 20.213.8.11:9010 \\\n --p2p-peer-address 74.208.142.87:9010 \\\n --p2p-peer-address 38.242.235.150:9010 \\\n --p2p-peer-address 10.182.0.15:9010 \\\n --p2p-peer-address 185.249.225.183:9010 \\\n --p2p-peer-address 194.163.162.47:9010 \\\n --p2p-peer-address 193.46.243.16:9010 \\\n'
+
+if [[ $(type nodine 2>&1 >/dev/null) ]]; then
+    echo -e "export PATH="$PATH":"$HOME"/inery-node/inery/bin:" >> $HOME/.bash_profile
+fi
+
+if [[ $inerylog ]]; then
+    echo -e "export inerylog="$HOME"/inery-node/inery.setup/master.node/blockchain/nodine.log" >> $HOME/.bash_profile
+fi
+source .bash_profile
 
 # Function set_account_name
 
@@ -158,6 +167,7 @@ done
 # Import wallet
 
 import_wallet(){
+    rm -rf $HOME/inery-wallet
     cd; cline wallet create -n $name --file $name.txt
     cline wallet import -n $name --private-key $privkey
 }
@@ -218,20 +228,20 @@ sleep 1
 # Clone repo
 
 cd $HOME
+pnodine=$(pgrep nodine)
+if [[ $pnodine ]]; then
+    pkill -9 nodine
+fi
 rm -rf inery-*
 git clone https://github.com/inery-blockchain/inery-node
-
-# Edit permission and set vars
-
-echo -e "export PATH="$PATH":"$HOME"/inery-node/inery/bin:"$HOME"/inery-node/inery.setup/master.node" >> $HOME/.bash_profile
-echo -e "export inerylog="$HOME"/inery-node/inery.setup/master.node/blockchain/nodine.log" >> $HOME/.bash_profile
-source $HOME/.bash_profile
 
 # Set config
 
 peers="$address:9010"
 sed -i "s/accountName/$name/g;s/publicKey/$pubkey/g;s/privateKey/$privkey/g;s/IP:9010/$peers/g" $HOME/inery-node/inery.setup/tools/config.json
-
+cd ~/inery-node/inery.setup/tools/scripts/
+script=("start.sh" "genesis_start.sh" "hard_replay.sh")
+echo -e "$PEERS'--max-clients 100 \\\n''--sync-fetch-span 1 \\\n'" | tee -a ${script[@]}
 echo -e "$bold$hijau 5. Running master node... $reset"
 sleep 1
 run_master
@@ -304,12 +314,9 @@ continue;;
 
 "Reg/approve as producer") # Reg as producer
 clear
-cd $HOME
-source $HOME/.bash_profile
-PATH=""$PATH":"$HOME"/inery-node/inery/bin:"$HOME"/inery-node/inery.setup/master.node"
 cd $HOME/inery-node/inery.setup/master.node/
 ./start.sh
-if [[ -d $HOME/inery-wallet && $IneryAccname && $IneryPubkey ]]; then
+if [[ $IneryAccname && $IneryPubkey ]]; then
         reg_producer
 	echo -e ""$bold""$kuning"\nSuccessfull reg as producer"
 	sleep 2
@@ -405,9 +412,7 @@ bash /tmp/createtoken.sh
 }
 
 cd $HOME
-source $HOME/.bash_profile
-PATH=""$PATH":"$HOME"/inery-node/inery/bin:"$HOME"/inery-node/inery.setup/master.node"
-if [[ -d $HOME/inery-wallet && $IneryAccname && $IneryPubkey ]]; then
+if [[ $IneryAccname && $IneryPubkey ]]; then
     create_test_token
     sleep 2
 else
@@ -425,9 +430,9 @@ read
 clear
 break;;
 
-"Exit") echo -e "$biru\t GOOD BY";exit;;
+"Exit") echo -e "$biru\t GOOD BY"; exit;;
 
-*) echo -e ""$bold""$merah"invalid option$REPLY $reset"; continue;
+*) echo -e ""$bold""$merah"invalid option$REPLY $reset"; continue;;
 
 esac
 done
