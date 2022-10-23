@@ -11,7 +11,7 @@ reset="\e[m"
 
 # Env Vars
 cd $HOME
-source .bash_profile
+source .bash_profile 2> /dev/null
 invalid_input=""$bold""$merah"Invalid input "$REPLY". Please select yes or no\n"$reset""
 invalid_format=""$bold""$merah"Format is not correct$reset\n"
 format=""$bold""$UL""$hijau""
@@ -177,10 +177,10 @@ import_wallet(){
 reg_producer(){
     cline wallet unlock -n $IneryAccname --password $(cat $HOME/$IneryAccname.txt)
     cline system regproducer $IneryAccname $IneryPubkey 0.0.0.0:9010
-    echo -e ""$kuning""$bold"Reg producer success"
+    echo -e ""$kuning""$bold"Reg producer success $reset"
     sleep 0.5
     cline system makeprod approve $IneryAccname $IneryAccname
-    echo -e ""$kuning""$bold"Approve producer success"
+    echo -e ""$kuning""$bold"Approve producer success $reset"
     sleep 0.5
 }
 
@@ -292,7 +292,8 @@ options=(
 "Check Log"
 "Reg/approve as producer"
 "Create test token"
-"Exit")
+"Exit"
+)
 select opt in "${options[@]}"
 do
 case $opt in
@@ -430,9 +431,9 @@ read
 clear
 break;;
 
-"Exit") echo -e "$biru\t GOOD BY"; exit;;
+"Exit") clear; echo -e "$biru\t GOOD BY👋$reset"; sleep 1; exit;;
 
-*) echo -e ""$bold""$merah"invalid option$REPLY $reset"; continue;;
+*) echo -e ""$bold""$merah"invalid option $REPLY $reset";;
 
 esac
 done
