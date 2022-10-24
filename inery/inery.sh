@@ -292,6 +292,7 @@ options=(
 "Check Log"
 "Reg/approve as producer"
 "Create test token"
+"Delete and uninstall node"
 "Exit"
 )
 select opt in "${options[@]}"
@@ -432,6 +433,17 @@ clear
 break;;
 
 "Exit") clear; echo -e "$biru\t GOOD BY👋$reset"; sleep 1; exit;;
+
+"Delete and uninstall node") # Full delete and uninstall
+clear
+cd ~/inery-node/inery.setup/master.node
+./stop.sh
+./clean.sh
+rm -rf $HOME/inery*
+rm -rf $HOME/$IneryAccname.txt
+echo -e ""$bold""$kuning"Successfull stop and uninstall full node"$reset""
+sleep 1
+break;;
 
 *) echo -e ""$bold""$merah"invalid option $REPLY $reset";;
 
