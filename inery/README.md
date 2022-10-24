@@ -12,6 +12,8 @@ wget -O inery.sh https://raw.githubusercontent.com/jambulmerah/guide-testnet/mai
 ```
 
 ## (Optional) snapshot or block data
+<details>
+  <summary>inactive</summary>
 block height `3730008` file size `641Mb` after extracted `64Gb` data size😂
 
 - this may take a while
@@ -29,10 +31,21 @@ tar -xzvf inery.tar.gz
 ```
 tail -f $HOME/inery-node/inery.setup/master.node/blockchain/nodine.log
 ```
+</details>
 
 ### Post installation
 ```
 source $HOME/.bash_profile
+```
+
+### Mendapatkan info block
+- Info block tertinggi saat ini
+```
+curl -sSL -X POST 'http://bis.blockchain-servers.world:8888/v1/chain/get_info' -H 'Accept: application/json' | jqcurl -sSL -X POST 'http://bis.blockchain-servers.world:8888/v1/chain/get_info' -H 'Accept: application/json' | jq
+```
+- Info block di local node
+```
+curl -sSL -X POST 'http://localhost:8888/v1/chain/get_info' -H 'Accept: application/json' | jq
 ```
 ### Check your logs
 ```
