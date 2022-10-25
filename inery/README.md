@@ -12,8 +12,6 @@ wget -O inery.sh https://raw.githubusercontent.com/jambulmerah/guide-testnet/mai
 ```
 
 ## (Optional) snapshot or block data
-</details>
-  </summary>👈Click</summary>
 block height `4477701` file size `1.8GB` after extracted `3.9GB` data size folder
 
 - this may take a while
@@ -33,7 +31,6 @@ mv blockchain/data/state/shared_memory.bin.bak blockchain/data/state/shared_memo
 ```
 tail -f $HOME/inery-node/inery.setup/master.node/blockchain/nodine.log
 ```
-</details>
 
 ### Post installation
 ```
