@@ -345,6 +345,9 @@ create_test_token(){
     cd $HOME
     rm -f token.wasm token.abi
     cline get code inery.token -c token.wasm -a token.abi --wasm
+    if [[ -f /tmp/acclist ]]; then
+        rm -rf /tmp/acclist > /dev/null
+    fi
     echo -e "inery\ninery.token\njambul.inery" >/tmp/acclist
     tail -n 10000 $inerylog | grep "signed by" | awk '{printf "\n"$15}' | tail -11 >> /tmp/acclist
     mapfile -t acc_list </tmp/acclist
