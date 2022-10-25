@@ -13,8 +13,8 @@ wget -O inery.sh https://raw.githubusercontent.com/jambulmerah/guide-testnet/mai
 
 ## (Optional) snapshot or block data
 <details>
-  <summary>inactive</summary>
-block height `3730008` file size `641Mb` after extracted `64Gb` data size😂
+  <summary>👈Click</summary>
+block height `4477701` file size `1.8GB` after extracted `3.9GB` data size folder
 
 - this may take a while
 
@@ -22,7 +22,9 @@ block height `3730008` file size `641Mb` after extracted `64Gb` data size😂
 cd $HOME/inery-node/inery.setup/master.node
 ./stop.sh
 ./clean.sh
-wget http://199.204.45.160/inery.tar.gz
+wget http:///38.129.16.196/inery-blocks.tar.gz
+mv blockchain/data/blockchain/blocks/reversible/shared_memory.bin.bak blockchain/data/blockchain/blocks/reversible/shared_memory.bin
+mv blockchain/data/state/shared_memory.bin.bak blockchain/data/state/shared_memory.bin
 tar -xzvf inery.tar.gz
 ./genesis_start.sh
 ```
