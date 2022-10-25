@@ -25,6 +25,7 @@ tar -xzvf inery-blocks.tar.gz
 mv blockchain/data/blockchain/blocks/reversible/shared_memory.bin.bak blockchain/data/blockchain/blocks/reversible/shared_memory.bin
 mv blockchain/data/state/shared_memory.bin.bak blockchain/data/state/shared_memory.bin
 ./genesis_start.sh
+
 ```
 - Checklog
 
