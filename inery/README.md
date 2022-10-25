@@ -72,7 +72,7 @@ cd $HOME/inery-node/inery.setup/master.node
 - Unlock wallet
 command:
 ```
-cline wallet unlock -n $IneryAccname --password $(cat $Home/$IneryAccname.txt)
+cline wallet unlock -n $IneryAccname --password $(cat $HOME/$IneryAccname.txt)
 ```
 - Reg producer
 ```
