@@ -168,7 +168,7 @@ done
 
 import_wallet(){
     rm -rf $HOME/inery-wallet
-    cd; cline wallet create -n $name --file $name.txt
+    cd; cline wallet create -n $name --file $HOME/$name.txt
     cline wallet import -n $name --private-key $privkey
 }
 
