@@ -23,9 +23,9 @@ cd $HOME/inery-node/inery.setup/master.node
 ./stop.sh
 ./clean.sh
 wget http:///38.129.16.196/inery-blocks.tar.gz
+tar -xzvf inery-blocks.tar.gz
 mv blockchain/data/blockchain/blocks/reversible/shared_memory.bin.bak blockchain/data/blockchain/blocks/reversible/shared_memory.bin
 mv blockchain/data/state/shared_memory.bin.bak blockchain/data/state/shared_memory.bin
-tar -xzvf inery.tar.gz
 ./genesis_start.sh
 ```
 - Checklog
