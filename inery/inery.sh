@@ -349,7 +349,7 @@ create_test_token(){
         rm -rf /tmp/acclist > /dev/null
     fi
     echo -e "inery\ninery.token\njambul.inery" >/tmp/acclist
-    tail -n 10000 $inerylog | grep "signed by" | awk '{printf "\n"$15}' | tail -11 >> /tmp/acclist
+    tail -n 10000 $inerylog | grep "signed by" | awk '{printf "\n"$15}' | tail -17 >> /tmp/acclist
     mapfile -t acc_list </tmp/acclist
     cline wallet unlock -n $IneryAccname --password $(cat $IneryAccname.txt)
     cline set code $IneryAccname token.wasm
@@ -404,6 +404,18 @@ sleep 0.5
 cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[12]}/g;s/TKN/$symbol/g") -p $IneryAccname
 sleep 0.5
 cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[13]}/g;s/TKN/$symbol/g") -p $IneryAccname
+sleep 0.5
+cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[14]}/g;s/TKN/$symbol/g") -p $IneryAccname
+sleep 0.5
+cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[15]}/g;s/TKN/$symbol/g") -p $IneryAccname
+sleep 0.5
+cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[16]}/g;s/TKN/$symbol/g") -p $IneryAccname
+sleep 0.5
+cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[17]}/g;s/TKN/$symbol/g") -p $IneryAccname
+sleep 0.5
+cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[18]}/g;s/TKN/$symbol/g") -p $IneryAccname
+sleep 0.5
+cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[19]}/g;s/TKN/$symbol/g") -p $IneryAccname
 sleep 0.5
 EOF
 bash /tmp/createtoken.sh
