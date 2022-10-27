@@ -455,6 +455,10 @@ break;;
 clear
 cd ~/inery-node/inery.setup/master.node
 ./stop.sh
+pnodine=$(pgrep nodine)
+if [[ $pnodine ]]; then
+    pkill -9 nodine
+fi
 ./clean.sh
 rm -rf $HOME/inery-*
 rm -rf $HOME/$IneryAccname.txt
