@@ -314,7 +314,7 @@ tail -f $inerylog | ccze -A
 clear
 continue;;
 
-"Reg/approve as producer(TASK I)") # Reg as producer
+"Reg/approve as producer (TASK I)") # Reg as producer
 clear
 cd $HOME/inery-node/inery.setup/master.node/
 ./start.sh
@@ -338,7 +338,7 @@ read
 clear
 break;;
 
-"Create test token(TASK II)") # Create test token
+"Create test token (TASK II)") # Create test token
 clear
 create_test_token(){
 
