@@ -9,23 +9,23 @@
 Sebelum memulai pastikan sudah buat akun di https://testnet.inery.io
 dan mengambil faucet yg paling bawah 500000 INR
 
-## Auto installation
+## Auto install
 ```
-wget -O inery.sh https://raw.githubusercontent.com/jambulmerah/guide-testnet/main/inery/inery.sh && bash inery.sh
+wget -O inery.sh https://raw.githubusercontent.com/jambulmerah/guide-testnet/main/inery/inery.sh && chmod 777 inery.sh && ./inery.sh
 ```
 Pilih nomor 1 untuk install master node
 
-### Post installation
+### Pasca install
 ```
 source $HOME/.bash_profile
 ```
 
 ### Mendapatkan info block
-- Info block tertinggi saat ini
+- 1. Info block tertinggi saat ini
 ```
 curl -sSL -X POST 'http://bis.blockchain-servers.world:8888/v1/chain/get_info' -H 'Accept: application/json' | jq
 ```
-- Info block di local node
+- 2. Info block di local node
 ```
 curl -sSL -X POST 'http://localhost:8888/v1/chain/get_info' -H 'Accept: application/json' | jq
 ```
@@ -33,46 +33,56 @@ curl -sSL -X POST 'http://localhost:8888/v1/chain/get_info' -H 'Accept: applicat
 ```
 tail -f $inerylog | ccze -A
 ```
-- Pertama anda akan melihat log yang seperti ini
+- 1. Pertama anda akan melihat log yang seperti ini
 
 ![img](./img/sync_true.jpg)
 
-Requisting range artinya 
+`Requisting range` artinya node sedang menyinkronkan block ini mungkin membutuhkun beberapa jam untuk mencapai blok sinkron penuh
 
-- If the block is fully synced you will see something like this
+- 2. Anda akan melihat seperti ini jika block sudah full syncron
 
 ![img](./img/sync_false.jpg)
 
-## Reg master node as producer block
-After the block is fully synced, continue to register as a block producer
-- Start master node
-command:
-```
-cd $HOME/inery-node/inery.setup/master.node
-./start.sh
-```
->NOTE don't do this before the block is fully synced
+`On_incoming block` dan `received block` artinya node sudah full syncron dan mulai menerima block baru
+## Register dan approve master node ( TASK 1)
 
-- Unlock wallet
-command:
+- 1. Setelah block syncron penuh pastikan balance testnet dari faucet sudah masuk
+jalankan command:
 ```
-cline wallet unlock -n $IneryAccname --password $(cat $HOME/$IneryAccname.txt)
+cline get account $IneryAccname 
 ```
-- Reg producer
+![img](./img/cek_akun.jpg)
+
+- 2. Jika anda melihat gambar seperti di atas dengan balance liquid 50000 INR dan status producer `<not voted>`
+mari kita lanjutkan command:
+
 ```
-cline system regproducer $IneryAccname $IneryPubkey 0.0.0.0:9010
+./inery.sh
 ```
-- Approve as producer
+- 3. Pilih no 3 `Reg/approve as producer` 
+
+Kira kira hasilnya seperti ini jika sukses
+
+![img](./img/suc_master.jpg)
+
+- 4. Untuk memastikannya jalankan command
+
 ```
-cline system makeprod approve $IneryAccname $IneryAccname
+cline get account $IneryAccname 
 ```
-After the reg producer transaction is successful, now your node starts to get a share of producing blocks
-- Check logs again
+Anda akan melihat status producer berubah dari produced `not voted` menjadi nama akun anda
+
+- 5. Cek log apakah akun node kita sudah mulai memproduksi block
+
 ```
 tail -f $inerylog | ccze -A | grep $IneryAccname
 ```
-after a few minutes you will see logs like this
+Setelah beberapa meneit anda akan melihhat akun anda mendapat giliran memproduksi block seperti gambar dibawah
 
 ![img](./img/block_produced.jpg)
+
+- 6. Sekarang tinggal login ke dashborad https://testnet.inery.io dan submit task 1
+
+good luck
 
 ## Usefull command
