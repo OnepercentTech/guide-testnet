@@ -13,10 +13,10 @@ reset="\e[m"
 # Env Vars
 cd $HOME
 source .bash_profile 2> /dev/null
-invalid_input=""$bold""$merah"Invalid input "$REPLY". Please select yes or no\n"$reset""
-invalid_format=""$bold""$merah"Format is not correct$reset\n"
+invalid_input=""$bold""$merah"Invalid input "$REPLY". Tolong pilih yes atau no\n"$reset""
+invalid_format=""$bold""$merah"Format salah$reset\n"
 format=""$bold""$UL""$hijau""
-continue=""$hijau""$bold"Press enter to continue"$reset""
+continue=""$hijau""$bold"Tekan enter untuk melanjutkan"$reset""
 bline="======================================================================="
 script_config='--max-clients 100 \\\n --sync-fetch-span 1 \\'
 #  \\\n --p2p-peer-address 135.181.133.169:9010 \\\n --p2p-peer-address 193.111.198.52:9010 \\\n --p2p-peer-address 185.144.99.30:9010 \\\n --p2p-peer-address 192.46.226.189:9010 \\\n --p2p-peer-address 144.91.99.67:9010 \\\n --p2p-peer-address 167.235.3.147:9010 \\\n --p2p-peer-address  45.84.138.118:9010 \\\n --p2p-peer-address 185.249.225.183:9010 \\\n --p2p-peer-address 38.242.235.150:9010 \\\n --p2p-peer-address  161.97.153.16:9010:9010 \\\n --p2p-peer-address   45.84.138.209:9010 \\\n --p2p-peer-address  38.242.248.157:9010 \\\n --p2p-peer-address 45.88.188.199:9010 \\\n --p2p-peer-address 5.189.138.167:9010 \\\n --p2p-peer-address 38.242.234.139:9010 \\\n --p2p-peer-address 86.48.0.180:9010 \\\n --p2p-peer-address 185.169.252.86:9010 \\\n --p2p-peer-address 38.242.130.28:9010 \\\n --p2p-peer-address 95.217.134.209:9010 \\\n --p2p-peer-address 78.46.123.82:9010 \\\n --p2p-peer-address 161.97.153.16:9010 \\\n --p2p-peer-address 38.242.154.67:9010 \\\n --p2p-peer-address 45.10.154.235:9010 \\\n --p2p-peer-address 45.84.138.8:9010 \\\n --p2p-peer-address 45.84.138.118:9010 \\\n --p2p-peer-address 38.242.248.157:9010 \\\n --p2p-peer-address 45.84.138.209:9010 \\\n --p2p-peer-address 95.217.236.223:9010 \\\n --p2p-peer-address 86.48.2.195:9010 \\\n --p2p-peer-address 135.181.254.255:9010 \\\n --p2p-peer-address 5.161.118.114:9010 \\\n --p2p-peer-address 78.47.159.172:9010 \\\n --p2p-peer-address 45.10.154.239:9010 \\\n --p2p-peer-address 45.84.138.9:9010 \\\n --p2p-peer-address 194.163.172.119:9010 \\\n --p2p-peer-address 45.84.138.119:9010 \\\n --p2p-peer-address 45.84.138.153:9010 \\\n --p2p-peer-address 130.185.118.73:9010 \\\n --p2p-peer-address 45.84.138.247:9010 \\\n --p2p-peer-address 80.65.211.208:9010 \\\n --p2p-peer-address 149.102.140.38:9010 \\\n --p2p-peer-address 38.242.149.97:9010 \\\n --p2p-peer-address 38.242.156.49:9010 \\\n --p2p-peer-address 38.242.159.125:9010 \\\n --p2p-peer-address 74.208.142.87:9010 \\\n --p2p-peer-address 38.242.235.150:9010 \\\n --p2p-peer-address 10.182.0.15:9010 \\\n --p2p-peer-address 185.249.225.183:9010 \\\n --p2p-peer-address 194.163.162.47:9010 \\\n --p2p-peer-address 193.46.243.16:9010 \\\n --p2p-peer-address 38.242.159.140:9010 \\\n --p2p-peer-address 161.97.169.27:9010 \\\n --p2p-peer-address 38.242.219.100:9010 \\\n --p2p-peer-address bis.blockchain-servers.world:9010 \\\n --p2p-peer-address sys.blockchain-servers.world:9010 \\\n --p2p-peer-address 193.111.198.52 \\\n --p2p-peer-address 62.210.245.223 \\\n --p2p-peer-address 185.144.99.30 \\\n --p2p-peer-address 38.242.153.15 \\\n --p2p-peer-address 192.46.226.189 \\\n --p2p-peer-address 194.5.152.187 \\\n --p2p-peer-address 5.189.138.167:9010 \\\n --p2p-peer-address 38.242.234.139:9010 \\\n --p2p-peer-address 86.48.0.180:9010 \\\n --p2p-peer-address 185.169.252.86:9010 \\\n --p2p-peer-address 38.242.130.28:9010 \\\n --p2p-peer-address 95.217.134.209:9010 \\\n --p2p-peer-address 78.46.123.82:9010 \\\n --p2p-peer-address 161.97.153.16:9010 \\\n --p2p-peer-address 38.242.154.67:9010 \\\n --p2p-peer-address 45.10.154.235:9010 \\\n --p2p-peer-address 45.84.138.8:9010 \\\n --p2p-peer-address 45.84.138.118:9010 \\\n --p2p-peer-address 38.242.248.157:9010 \\\n --p2p-peer-address 45.84.138.209:9010 \\\n --p2p-peer-address 95.217.236.223:9010 \\\n --p2p-peer-address 86.48.2.195:9010 \\\n --p2p-peer-address 135.181.254.255:9010 \\\n --p2p-peer-address 5.161.118.114:9010 \\\n --p2p-peer-address 78.47.159.172:9010 \\\n --p2p-peer-address 45.10.154.239:9010 \\\n --p2p-peer-address 45.84.138.9:9010 \\\n --p2p-peer-address 194.163.172.119:9010 \\\n --p2p-peer-address 45.84.138.119:9010 \\\n --p2p-peer-address 45.84.138.153:9010 \\\n --p2p-peer-address 130.185.118.73:9010 \\\n --p2p-peer-address 45.84.138.247:9010 \\\n --p2p-peer-address 80.65.211.208:9010 \\\n --p2p-peer-address 149.102.140.38:9010 \\\n --p2p-peer-address 38.242.149.97:9010 \\\n --p2p-peer-address 38.242.156.49:9010 \\\n --p2p-peer-address 38.242.159.125:9010 \\\n --p2p-peer-address 20.213.8.11:9010 \\\n --p2p-peer-address 74.208.142.87:9010 \\\n --p2p-peer-address 38.242.235.150:9010 \\\n --p2p-peer-address 10.182.0.15:9010 \\\n --p2p-peer-address 185.249.225.183:9010 \\\n --p2p-peer-address 194.163.162.47:9010 \\\n --p2p-peer-address 193.46.243.16:9010 \\'
@@ -35,17 +35,17 @@ source .bash_profile
 set_account_name(){
 
 accname=""$bold""$hijau"account name"$reset""
-accID="Enter your $accname: $reset"
+accID="Masukan $accname: $reset"
 while true; do
 echo "$bline"
 read -p "$(printf "$accID""$reset")" name
 echo -e "$bline\n"
     if [[ ! "$name" =~ ^[a-z1-5]{2,12}[.]{0,1}[a-z1-5]{2,12}$ ||  ${#name} -gt 12 ]];then
         echo -e ""$name ""$invalid_format""$bold""$merah"Name can have maxiumum of 12 charachters ASCII lowercase a-z, 1-5 and dot character "." but dot can't be at the end of string\n"$reset""
-	accID="Please enter your correct $accname: "
+	accID="Tolong masukan yang benar $accname: "
     else
 	while true; do
-        echo -e -n "Is this $accname "$format""$name""$reset" correct? [Y/n]"
+        echo -e -n "Apakah ini $accname "$format""$name""$reset" sudah benar? [Y/n]"
         read yn
         case $yn in
             [Yy]* ) printf "\n"; ACC=true; break;;
@@ -58,7 +58,7 @@ echo -e "$bline\n"
             source $HOME/.bash_profile
             break
         else
-            accID="Please enter your $accname again: "
+            accID="Tolong masukan $accname lagi: "
         fi
     fi
 done
@@ -70,17 +70,17 @@ done
 set_pubkey(){
 
 pubkeyname="$bold""$hijau"public-key"$reset"
-publickey="Enter your "$pubkeyname": $reset"
+publickey="Masukan "$pubkeyname": $reset"
 while true; do
 echo $bline
 read -p "$(printf "$publickey""$reset")" pubkey
 echo -e "$bline\n"
     if [[ ! $pubkey =~ ^[INE]{1}[a-zA-Z1-9]{52}$ ]]; then
         echo -e "$bold$pubkeyname $pubkey" "$invalid_format"
-        publickey="Please enter your correct $pubkeyname: $reset"
+        publickey="Tolong masukan yang benar $pubkeyname: $reset"
     else
 	while true; do
-        echo -e -n "Is this $pubkeyname "$format""$pubkey"$reset correct? [Y/n]"
+        echo -e -n "Apakah ini $pubkeyname "$format""$pubkey"$reset sudah benar? [Y/n]"
         read yn
         case $yn in
             [Yy]* ) printf "\n"; PUB=true; break;;
@@ -93,7 +93,7 @@ echo -e "$bline\n"
             source $HOME/.bash_profile
 	    break
         else
-	    publickey="Enter your $pubkeyname again: "
+	    publickey="Masukan $pubkeyname lagi: "
         fi
     fi
 done
@@ -105,17 +105,17 @@ done
 set_privkey(){
 
 privkeyname="$bold""$hijau"private-key"$reset"
-privatekey="Enter your"$hijau" $privkeyname: "
+privatekey="Masukan"$hijau" $privkeyname: "
 while true; do
 echo -e "$bline"
 read -p "$(printf "$privatekey""$reset")" privkey
 echo -e "$bline\n"
     if [[ ! $privkey =~ ^[5]{1}[a-zA-Z1-9]{50}$ ]]; then
         echo -e "$bold$privkeyname $privkey" "$invalid_format"
-        privatekey="Please enter your correct $privkeyname: $reset"
+        privatekey="Tolong masukan yang benar $privkeyname: $reset"
     else
 	while true; do
-        echo -e -n "Is this $privkeyname "$format""$privkey"$reset correct? [Y/n]"
+        echo -e -n "Apakah ini $privkeyname "$format""$privkey"$reset sudah benar? [Y/n]"
         read yn
         case $yn in
             [Yy]* ) printf "\n"; PRIV=true; break;;
@@ -126,7 +126,7 @@ echo -e "$bline\n"
         if [[ $PRIV = true ]]; then
             break
 	else
-	    privatekey="Enter your $privkeyname again: "
+	    privatekey="Masukan $privkeyname lagi: "
         fi
     fi
 done
@@ -137,7 +137,7 @@ set_peers(){
 
 default_ip=$(curl -s ifconfig.me)
 ipaddress="$bold""$hijau"ip-address"$reset"
-enter_ip="Enter your"$hijau" $ipaddress: "
+enter_ip="Masukan"$hijau" $ipaddress: "
 while true; do
 echo -e "$bline\n"
 echo -e "$bold""$kuning"INFO: "$reset"Your IP in this machine is: "$bold""$hijau""$default_ip$reset\n"
@@ -146,10 +146,10 @@ read -p "$(printf "$enter_ip""$reset")" address
 echo -e "$bline\n"
     if [[ ! $address =~ ^[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}$ ]]; then
         echo -e "$bold$ipaddress $address" "$invalid_format"
-        enter_ip="Please enter your correct $ipaddress: $reset"
+        enter_ip="Tolong masukan yang benar $ipaddress: $reset"
     else
 	while true; do
-        echo -e -n "Is this $ipaddress "$format""$address"$reset correct? [Y/n]"
+        echo -e -n "Apakah ini $ipaddress "$format""$address"$reset sudah benar? [Y/n]"
         read yn
         case $yn in
             [Yy]* ) printf "\n"; ADDR=true; break;;
@@ -160,7 +160,7 @@ echo -e "$bline\n"
         if [[ $ADDR = true ]]; then
             break
 	else
-	    enter_ip="Enter your $ipaddress again: "
+	    enter_ip="Masukan $ipaddress lagi: "
         fi
     fi
 done
@@ -304,9 +304,7 @@ case $opt in
 "Install master node") # install Node
 clear
 install_master_node
-
-echo -e -n $continue
-read
+sleep 1
 clear
 break;;
 

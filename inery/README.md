@@ -6,14 +6,14 @@
 - [Inery testnet dashboard](https://testnet.inery.io/dashboard)
 - [Inery testnet explorer](https://explorer.inery.io)
 
-## Auto installation 
+Sebelum memulai pastikan sudah buat akun di https://testnet.inery.io
+dan mengambil faucet yg paling bawah 500000 INR
+
+## Auto installation
 ```
 wget -O inery.sh https://raw.githubusercontent.com/jambulmerah/guide-testnet/main/inery/inery.sh && bash inery.sh
 ```
-
-```
-tail -f $HOME/inery-node/inery.setup/master.node/blockchain/nodine.log
-```
+Pilih nomor 1 untuk install master node
 
 ### Post installation
 ```
@@ -29,13 +29,15 @@ curl -sSL -X POST 'http://bis.blockchain-servers.world:8888/v1/chain/get_info' -
 ```
 curl -sSL -X POST 'http://localhost:8888/v1/chain/get_info' -H 'Accept: application/json' | jq
 ```
-### Check your logs
+## Check log
 ```
 tail -f $inerylog | ccze -A
 ```
-- First your master node will start fully synchronizing blocks. you will see like this
+- Pertama anda akan melihat log yang seperti ini
 
 ![img](./img/sync_true.jpg)
+
+Requisting range artinya 
 
 - If the block is fully synced you will see something like this
 
