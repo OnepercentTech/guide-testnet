@@ -45,7 +45,7 @@ echo -e "$bline\n"
 	accID="Tolong masukan yang benar $accname: "
     else
 	while true; do
-        echo -e -n "Apakah ini $accname "$format""$name""$reset" sudah benar? [Y/n]"
+        echo -e -n "Apakah $accname "$format""$name""$reset" sudah benar? [Y/n]"
         read yn
         case $yn in
             [Yy]* ) printf "\n"; ACC=true; break;;
@@ -80,7 +80,7 @@ echo -e "$bline\n"
         publickey="Tolong masukan yang benar $pubkeyname: $reset"
     else
 	while true; do
-        echo -e -n "Apakah ini $pubkeyname "$format""$pubkey"$reset sudah benar? [Y/n]"
+        echo -e -n "Apakah $pubkeyname "$format""$pubkey"$reset sudah benar? [Y/n]"
         read yn
         case $yn in
             [Yy]* ) printf "\n"; PUB=true; break;;
@@ -115,7 +115,7 @@ echo -e "$bline\n"
         privatekey="Tolong masukan yang benar $privkeyname: $reset"
     else
 	while true; do
-        echo -e -n "Apakah ini $privkeyname "$format""$privkey"$reset sudah benar? [Y/n]"
+        echo -e -n "Apakah $privkeyname "$format""$privkey"$reset sudah benar? [Y/n]"
         read yn
         case $yn in
             [Yy]* ) printf "\n"; PRIV=true; break;;
@@ -137,7 +137,7 @@ set_peers(){
 
 default_ip=$(curl -s ifconfig.me)
 ipaddress="$bold""$hijau"ip-address"$reset"
-enter_ip="Masukan"$hijau" $ipaddress: "
+enter_ip="Masukan public "$hijau" $ipaddress: "
 while true; do
 echo -e "$bline\n"
 echo -e "$bold""$kuning"INFO: "$reset"Your IP in this machine is: "$bold""$hijau""$default_ip$reset\n"
@@ -146,10 +146,10 @@ read -p "$(printf "$enter_ip""$reset")" address
 echo -e "$bline\n"
     if [[ ! $address =~ ^[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}$ ]]; then
         echo -e "$bold$ipaddress $address" "$invalid_format"
-        enter_ip="Tolong masukan yang benar $ipaddress: $reset"
+        enter_ip="Tolong masukan yang benar public $ipaddress: $reset"
     else
 	while true; do
-        echo -e -n "Apakah ini $ipaddress "$format""$address"$reset sudah benar? [Y/n]"
+        echo -e -n "Apakah $ipaddress "$format""$address"$reset sudah benar? [Y/n]"
         read yn
         case $yn in
             [Yy]* ) printf "\n"; ADDR=true; break;;
@@ -160,7 +160,7 @@ echo -e "$bline\n"
         if [[ $ADDR = true ]]; then
             break
 	else
-	    enter_ip="Masukan $ipaddress lagi: "
+	    enter_ip="Masukan public $ipaddress lagi: "
         fi
     fi
 done
