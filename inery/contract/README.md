@@ -13,43 +13,43 @@ autoconf libtool curl zlib1g-dev sudo ruby libusb-1.0-0-dev \
 libcurl4-gnutls-dev pkg-config patch llvm-7-dev clang-7 vim-common jq libncurses5 git
 ```
 
-## Set inery accname env vars
+## Set nama akun sebagai env variable 
 ```
-IneryAccname=<FILL_YOUR_ACOOUNT_NAME> # view on testnet dashboard
+IneryAccname=<FILL_YOUR_ACOOUNT_NAME> # lihat di dashborad
 ```
 ##Get binary inery.cdt tools
 
-#### Clone from official github
+#### Clone dari official github
 
 ```
 cd ~
 git clone --recursive https://github.com/inery-blockchain/inery.cdt
 ```
 
-#### Set as env vars
+#### Set PATH env
 
-temporary vars:
+- temporary PATH env:
 ```
 export PATH="$PATH:$HOME/inery.cdt/bin:$HOME/inery-node/inery/bin"
 ```
-or permanent vars;
+- Atau  permanent PATH env;
 ```
 echo 'export PATH="$PATH:$HOME/inery.cdt/bin:$HOME/inery-node/inery/bin"' >> $HOME/.bash_profile
 source $HOME/.bash_profile
 ```
 
-## Write and compile contract
+## Tulis dan compile kode
 
-#### Make directrory
+#### Buat directrory
 
 ```
-mkdir -p inrcrud
+mkdir -p $HOME/inrcrud
 ```
 
 #### Write code
 
 ```
-sudo tee inrcrud/inrcrud.cpp >/dev/null <<EOF
+sudo tee $HOME/inrcrud/inrcrud.cpp >/dev/null <<EOF
 #include <inery/inery.hpp>
 #include <inery/print.hpp>
 #include <string>
@@ -129,13 +129,13 @@ EOF
 #### Compile code
 
 ```
-inery-cpp inrcrud/inrcrud.cpp -o inrcrud/inrcrud.wasm
+inery-cpp $HOME/inrcrud/inrcrud.cpp -o $HOME/inrcrud/inrcrud.wasm
 ```
 ## Deploy contract
 #### First unlock wallet
 
 ```
-cline wallet unlock --password 
+cline wallet unlock -n $IneryAccname --password $(cat $HOME/$IneryAccname.txt)
 ```
 
 #### Set contract
@@ -144,7 +144,9 @@ cline wallet unlock --password
 cline set contract $IneryAccname ./inrcrud
 ```
 
-## Make push contract transaction
+## Buat push contract transaction
+
+** > NOTE: catat semua nomor block atau block_num nya
 
 - `create` action
 
@@ -167,7 +169,6 @@ cline push action $IneryAccname update '[ 1,  "My first Record Modified"]' -p $I
 - `destroy` action
 
 ```
-cline push action $IneryAccname destroy [1] -p $IneryAccname -j
+cline push action $IneryAccname destroy '[1]' -p $IneryAccname -j
 ```
 
-# And then? what next?
