@@ -12,7 +12,7 @@ dan mengambil faucet yg paling bawah 500000 INR
 ## Auto install
 ```
 sudo -i
-wget -O $HOME/inery.sh https://raw.githubusercontent.com/jambulmerah/guide-testnet/main/inery/inery.sh && chmod 777 $HOME/inery.sh && ./$HOME/inery.sh
+wget -O $HOME/inery.sh https://raw.githubusercontent.com/jambulmerah/guide-testnet/main/inery/inery.sh && chmod 777 $HOME/inery.sh && bash $HOME/inery.sh
 ```
 Pilih nomor 1 untuk install master node
 
@@ -58,7 +58,7 @@ cline get account $IneryAccname
 mari kita lanjutkan command:
 
 ```
-./$HOME/inery.sh
+bash $HOME/inery.sh
 ```
 **- 3. Pilih no 3 `Reg/approve as producer`**
 
