@@ -40,7 +40,7 @@ while true; do
 echo "$bline"
 read -p "$(printf "$accID""$reset")" name
 echo -e "$bline\n"
-    if [[ ! "$name" =~ ^[a-z1-5]{2,12}[.]{0,1}[a-z1-5]{2,12}$ ||  ${#name} -gt 12 ]];then
+    if [[ ! "$name" =~ ^[a-z1-5]{1,12}[.]{0,1}[a-z1-5]{1,12}$ ||  ${#name} -gt 12 ]];then
         echo -e ""$name ""$invalid_format""$bold""$merah"Name can have maxiumum of 12 charachters ASCII lowercase a-z, 1-5 and dot character "." but dot can't be at the end of string\n"$reset""
 	accID="Tolong masukan yang benar $accname: "
     else
