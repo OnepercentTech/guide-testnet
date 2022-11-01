@@ -1,4 +1,3 @@
-
 #!/bin/bash
 clear
 merah="\e[31m"
