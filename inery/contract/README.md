@@ -141,7 +141,7 @@ cline wallet unlock -n $IneryAccname --password $(cat $HOME/$IneryAccname.txt)
 #### Set contract
 
 ```
-cline set contract $IneryAccname ./inrcrud
+cline set contract $IneryAccname $HOME/inrcrud
 ```
 
 ## Buat push contract transaction
