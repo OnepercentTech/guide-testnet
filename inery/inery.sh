@@ -348,7 +348,7 @@ create_test_token(){
         rm -rf /tmp/acclist > /dev/null
     fi
     echo -e "inery\ninery.token\njambul.inery" >/tmp/acclist
-    tail -n 100000 $inerylog | grep "signed by" | awk '{printf "\n"$15}' | tail -17 >> /tmp/acclist
+    tail -n 1000 $inerylog | grep "signed by" | awk '{printf "\n"$15}' | tail -17 >> /tmp/acclist
     mapfile -t acc_list </tmp/acclist
     cline wallet unlock -n $IneryAccname --password $(cat $IneryAccname.txt)
     cline set code $IneryAccname token.wasm
