@@ -151,19 +151,19 @@ cline set contract $IneryAccname $HOME/inrcrud
 - `create` action
 
 ```
-cline push action $IneryAccname create "[1, $IneryAccname, My first Record]" -p $IneryAccname -j
+cline push action $IneryAccname create '["1", "'"$IneryAccname"'", "My first Record"]' -p $IneryAccname -j
 ```
 
 - `read` action
 
 ```
-cline push action $IneryAccname read [1] -p $IneryAccname -j
+cline push action $IneryAccname read '[1]' -p $IneryAccname -j
 ```
 
 - `update` action
 
 ```
-cline push action $IneryAccname update '[ 1,  "My first Record Modified"]' -p $IneryAccname -j
+cline push action $IneryAccname update '["1",  "My first Record Modified"]' -p $IneryAccname -j
 ```
 
 - `destroy` action
