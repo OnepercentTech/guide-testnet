@@ -356,9 +356,9 @@ create_test_token(){
     sleep 0.5
     cline set abi $IneryAccname token.abi
     echo -e ""$kuning""$bold"Set abi success$reset"
-    create_data=\''["account", "30000.000 TKN", "creating my first tokens"]'\'
-    issue_data=\''["account", "1000.000 TKN", "issuong 1000 TKN in circulating supply"]'\'
-    transfer_data=\''["account", "test22", "1.000 TKN", "Here you go 1 TKN from account 😁"]'\'
+    create_data=\''["account", "30000.0000 TKN", "creating my first tokens"]'\'
+    issue_data=\''["account", "10000.0000 TKN", "issuing 1000 TKN in circulating supply"]'\'
+    transfer_data=\''["account", "test22", "10.0000 TKN", "Here you go 10 TKN from account 😁"]'\'
     echo
     symbol_name=""$kuning""$bold"Set your token symbol: $reset"
     while read -p "$(printf "$symbol_name")" symbol; do
