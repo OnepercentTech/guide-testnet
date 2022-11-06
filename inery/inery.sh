@@ -317,7 +317,7 @@ continue;;
 clear
 cd $HOME/inery-node/inery.setup/master.node/
 ./start.sh
-if [[ $IneryAccname && $IneryPubkey ]]; then
+if [[ -d $HOME/inery-wallet && $IneryAccname && $IneryPubkey ]]; then
         reg_producer
 	echo -e ""$bold""$kuning"\nSuccessfull reg as producer"
 	sleep 2
@@ -415,7 +415,7 @@ cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[19]}
 }
 
 cd $HOME
-if [[ $IneryAccname && $IneryPubkey ]]; then
+if [[ ! -d $HOME/inery-wallet && $IneryAccname && $IneryPubkey ]]; then
     create_test_token
     sleep 2
 else
