@@ -356,75 +356,62 @@ create_test_token(){
     sleep 0.5
     cline set abi $IneryAccname token.abi
     echo -e ""$kuning""$bold"Set abi success$reset"
-    create_data=\''["account", "30000.0000 TKN", "creating my first tokens"]'\'
-    issue_data=\''["account", "10000.0000 TKN", "issuing 1000 TKN in circulating supply"]'\'
-    transfer_data=\''["account", "test22", "10.0000 TKN", "Here you go 10 TKN from account 😁"]'\'
     echo
     symbol_name=""$kuning""$bold"Set your token symbol: $reset"
     while read -p "$(printf "$symbol_name")" symbol; do
         if [[ ! $symbol =~ ^[A-Z]{1,7}$ ]]; then
             echo -e ""$kuning"Symbol only with 1-7 UPPERCASE"
-            continue
-        else
-    create_token_data=$(echo -n $create_data | sed "s/account/$IneryAccname/g;s/TKN/$symbol/g")
-    issue_token_data=$(echo -n $issue_data | sed "s/account/$IneryAccname/g;s/TKN/$symbol/g")
-            tee /tmp/createtoken.sh >/dev/null <<EOF
-#!/bin/bash
-cline push action inery.token create $(echo -n $create_token_data) -p $IneryAccname
-printf "\n$kuning$bold successfull create token symbol $symbol$reset\n"
-sleep 2
-cline push action inery.token issue $(echo -n $issue_token_data) -p $IneryAccname
-echo -e "\n$kuning$bold successfull issuing token$reset\n"
-sleep 2
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[0]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[1]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[2]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[3]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[4]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[5]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[6]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[7]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[8]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[9]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[10]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[11]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[12]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[13]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[14]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[15]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[16]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[17]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[18]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-cline push action inery.token transfer $(echo -n $transfer_data | sed "s/account/$IneryAccname/g;s/test22/${acc_list[19]}/g;s/TKN/$symbol/g") -p $IneryAccname
-sleep 0.5
-EOF
-bash /tmp/createtoken.sh
+	else
+	    break
+        fi
+    done
+while true; do
+cline push action inery.token create '["'"$IneryAccname"'", "'"50000.0000 $symbol"'", "creating 50000 max supply"]' -p $IneryAccname
+tx_confirmation=$(cline get currency stats inery.token $symbol | jq -r .$symbol.issuer)
+    if [ ! $tx_confirmation = $IneryAccname ]; then
+        printf "\n$kuning$bold Wait tx confirmation create token symbol $symbol$reset\n"
+        sleep 1
+    else
+        printf "\n$kuning$bold Tx confirmed for create token $symbol$reset\n"
+        break
+    fi
+done
+
+while true; do
+cline push action inery.token issue '["'"$IneryAccname"'", "'"10000.0000 $symbol"'", "issuing 1000 in circulating supply"]' -p $IneryAccname
+tx_issue_confirmation=$(cline get currency stats inery.token $symbol | jq -r .$symbol.supply | awk '{printf $1}' | sed 's/\.0000//')
+    if [ ! $tx_issue_confirmation = 10000 ]; then
+        printf "\n$kuning$bold Wait tx confirmation issue supply token $symbol$reset\n"
+        sleep 1
+    else
+        printf "\n$kuning$bold Tx confirmed for create token $symbol$reset\n"
+        break
+    fi
+done
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[0]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[1]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[2]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[3]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[4]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[5]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[6]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[7]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[8]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[9]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[10]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[11]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[12]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[13]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[14]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[15]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[16]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[17]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[18]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[19]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
             echo -e "Token succesfully transfered to ${#acc_list[*]} account"
             for list in ${!acc_list[*]}; do
 	    printf "%4d: %s\n" $list ${acc_list[$list]}
 	    done
-            break
-        fi
-    done
 }
 
 cd $HOME
