@@ -39,9 +39,17 @@ while true; do
 echo "$bline"
 read -p "$(printf "$accID""$reset")" name
 echo -e "$bline\n"
-    if [[ ! "$name" =~ ^[a-z1-5]{1,12}[.]{0,1}[a-z1-5]{1,12}$ ||  ${#name} -gt 12 ]];then
-        echo -e ""$name ""$invalid_format""$bold""$merah"Name can have maxiumum of 12 charachters ASCII lowercase a-z, 1-5 and dot character "." but dot can't be at the end of string\n"$reset""
-	accID="Tolong masukan yang benar $accname: "
+check_account=`curl -sS -L -X POST 'http://bis.blockchain-servers.world:8888/v1/chain/get_account' -H 'Content-Type: application/json' -H 'Accept: application/json' -d '{"account_name":"'"$name"'"}'| jq -r '.account_name' 2> /dev/null`
+get_pubkey=`curl -sS -L -X POST 'http://bis.blockchain-servers.world:8888/v1/chain/get_account' -H 'Content-Type: application/json' -H 'Accept: application/json' -d '{"account_name":"'"$name"'"}'| jq -r '.permissions[0].required_auth.keys[].key' 2> /dev/null`
+echo -e "Cek akun apakah sudah terdaftar di blockchain\n"$reset""
+sleep 1
+    if [[ $check_account = $name ]];then
+        echo -e "Good $accname $name berhasil di registrasi\n"$reset""
+	accID="Tolong masukan $accname yg benar: "
+        echo -e "Cek public key untuk $accname $name\n"$reset""
+        if [[ $get_pubkey ]]; then
+        echo -e "Good $get_pubkey ada\n"$reset""
+        fi
     else
 	while true; do
         echo -e -n "Apakah $accname "$format""$name""$reset" sudah benar? [Y/n]"
@@ -415,7 +423,7 @@ cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[19]}
 }
 
 cd $HOME
-if [[ ! -d $HOME/inery-wallet && $IneryAccname && $IneryPubkey ]]; then
+if [[ -d $HOME/inery-wallet && $IneryAccname && $IneryPubkey ]]; then
     create_test_token
     sleep 2
 else
