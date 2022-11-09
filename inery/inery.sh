@@ -31,28 +31,29 @@ source .bash_profile
 
 # Function set_account_name
 
-set_account_name(){
+set_account(){
 
-accname=""$bold""$hijau"account name"$reset""
+accname=""$hijau"account name"$reset""
 accID="Masukan $accname: $reset"
 while true; do
 echo "$bline"
 read -p "$(printf "$accID""$reset")" name
 echo -e "$bline\n"
-check_account=`curl -sS -L -X POST 'http://bis.blockchain-servers.world:8888/v1/chain/get_account' -H 'Content-Type: application/json' -H 'Accept: application/json' -d '{"account_name":"'"$name"'"}'| jq -r '.account_name' 2> /dev/null`
+get_account=`curl -sS -L -X POST 'http://bis.blockchain-servers.world:8888/v1/chain/get_account' -H 'Content-Type: application/json' -H 'Accept: application/json' -d '{"account_name":"'"$name"'"}'| jq -r '.account_name' 2> /dev/null`
 get_pubkey=`curl -sS -L -X POST 'http://bis.blockchain-servers.world:8888/v1/chain/get_account' -H 'Content-Type: application/json' -H 'Accept: application/json' -d '{"account_name":"'"$name"'"}'| jq -r '.permissions[0].required_auth.keys[].key' 2> /dev/null`
-echo -e "Cek akun apakah sudah terdaftar di blockchain\n"$reset""
-sleep 1
-    if [[ $check_account = $name ]];then
-        echo -e "Good $accname $name berhasil di registrasi\n"$reset""
-	accID="Tolong masukan $accname yg benar: "
-        echo -e "Cek public key untuk $accname $name\n"$reset""
-        if [[ $get_pubkey ]]; then
-        echo -e "Good $get_pubkey ada\n"$reset""
-        fi
-    else
+get_balance=`curl -sS -L -X POST 'http://bis.blockchain-servers.world:8888/v1/chain/get_account' -H 'Content-Type: application/json' -H 'Accept: application/json' -d '{"account_name":"'"$name"'"}'| jq -r ."core_liquid_balance" 2> /dev/null`
+pubkey="$hijau"$bold"$get_pubkey"
+sleep 0.1
+    if [[ $get_account = $name ]];then
+	account="Akun name: $hijau"$bold"$get_account"$reset"\n"
+	pubkey="Pubkey: $hijau"$bold"$get_pubkey"$reset"\n"
+	balance="Balance: $hijau"$bold"$get_balance"$reset"\n"
+        acc_info=("$account" "$pubkey" "$balance")
+        for acc in ${acc_info[@]}; do
+        echo -e -n $acc
+        done
 	while true; do
-        echo -e -n "Apakah $accname "$format""$name""$reset" sudah benar? [Y/n]"
+        echo -e -n "Tolong cek apakah sudah sama dengan yang didashboard?"$reset"[Y/n]"
         read yn
         case $yn in
             [Yy]* ) printf "\n"; ACC=true; break;;
@@ -62,50 +63,20 @@ sleep 1
         done
         if [[ $ACC = true ]]; then
             echo -e "export IneryAccname="$name"" >> $HOME/.bash_profile
+            echo -e "export IneryPubkey="$get_pubkey"" >> $HOME/.bash_profile
             source $HOME/.bash_profile
             break
         else
             accID="Tolong masukan $accname lagi: "
         fi
-    fi
-done
-
-}
-
-# funtion Set pubkey
-
-set_pubkey(){
-
-pubkeyname="$bold""$hijau"public-key"$reset"
-publickey="Masukan "$pubkeyname": $reset"
-while true; do
-echo $bline
-read -p "$(printf "$publickey""$reset")" pubkey
-echo -e "$bline\n"
-    if [[ ! $pubkey =~ ^[INE]{1}[a-zA-Z1-9]{52}$ ]]; then
-        echo -e "$bold$pubkeyname $pubkey" "$invalid_format"
-        publickey="Tolong masukan yang benar $pubkeyname: $reset"
     else
-	while true; do
-        echo -e -n "Apakah $pubkeyname "$format""$pubkey"$reset sudah benar? [Y/n]"
-        read yn
-        case $yn in
-            [Yy]* ) printf "\n"; PUB=true; break;;
-            [Nn]* ) printf "\n"; PUB=false; break;;
-            * ) echo -e "$invalid_input"; echo -e "$bline\n";;
-        esac
-        done
-        if [ $PUB = true ]; then
-            echo -e "export IneryPubkey="$pubkey"" >> $HOME/.bash_profile
-            source $HOME/.bash_profile
-	    break
-        else
-	    publickey="Masukan $pubkeyname lagi: "
-        fi
+        echo -e "Uh tidack ditemukan $accname dengan nama $name 😱\n"$reset""
+	accID="Tolong masukan $accname yg benar: "
     fi
 done
 
 }
+
 
 # Funtion Set privkey
 
@@ -196,26 +167,6 @@ reg_producer(){
 # Set account
 
 install_master_node(){
-echo -e "$bold$hijau 1. Set account... $reset"
-sleep 1
-
-# S3t account
-set_account_name
-set_pubkey
-set_privkey
-set_peers
-
-# Print account setting
-
-echo -e "\n$bline"
-echo -e "\t\t\tMaster-node configuration$reset"
-echo -e "$bline"
-echo -e "Your $accname is: $bold$hijau$name$reset"
-echo -e "Your $pubkeyname is: $bold$hijau$pubkey$reset"
-echo -e "Your $privkeyname is: $bold$hijau$privkey$reset"
-echo -e "Your peers is: $bold$hijau$address:9010$reset"
-echo -e "$bline\n"
-sleep 2
 # Update upgrade
 
 echo -e "$bold$hijau 2. Updating packages... $reset"
@@ -245,9 +196,27 @@ rm -rf inery-*
 git clone https://github.com/inery-blockchain/inery-node
 
 # Set config
+echo -e "$bold$hijau 1. Set account... $reset"
+sleep 1
+
+set_account
+set_privkey
+set_peers
+
+# Print account setting
+
+echo -e "\n$bline"
+echo -e "\t\t\tMaster-node configuration$reset"
+echo -e "$bline"
+echo -e "Your $accname is: $bold$hijau$name$reset"
+echo -e "Your $pubkeyname is: $bold$hijau$pubkey$reset"
+echo -e "Your $privkeyname is: $bold$hijau$privkey$reset"
+echo -e "Your peers is: $bold$hijau$address:9010$reset"
+echo -e "$bline\n"
+sleep 2
 
 peers="$address:9010"
-sed -i "s/accountName/$name/g;s/publicKey/$pubkey/g;s/privateKey/$privkey/g;s/IP:9010/$peers/g" $HOME/inery-node/inery.setup/tools/config.json
+sed -i "s/accountName/$name/g;s/publicKey/$IneryPubkey/g;s/privateKey/$privkey/g;s/IP:9010/$peers/g" $HOME/inery-node/inery.setup/tools/config.json
 cd ~/inery-node/inery.setup/tools/scripts/
 script=("start.sh" "genesis_start.sh" "hard_replay.sh")
 echo -e $script_config | tee -a ${script[@]} > /dev/null
