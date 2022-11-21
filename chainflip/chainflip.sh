@@ -18,8 +18,10 @@ if [[ $(lsof -i :8078,30333 | grep LISTEN) ]]; then
     exit 1
 fi
 
-echo -e "\e[1;32m: Chainflip node validator installation with infura pi by jambulmera\e[m"
+echo -e "\e[1;32m\tChainflip node validator installation with infura api by jambulmerah\e[m"
+sleep 2
 # [1/7] update upgrade
+clear
 echo -e "\e[1;7;32m[1/7]: Update upgrade packages\e[m"
 sleep 1
 apt update >/dev/null 2>&1
@@ -28,9 +30,11 @@ DEBIAN_FRONTEND=noninteractive \
   -o Dpkg::Options::=--force-confold \
   -o Dpkg::Options::=--force-confdef \
   -y --allow-downgrades --allow-remove-essential --allow-change-held-packages >/dev/null 2>&1
+clear
 
 # [2/7] install software
 echo -e "\e[1;7;32m[2/7]: Installing software\e[m"
+sleep 1
 mkdir -p /etc/apt/keyrings >/dev/null 2>&1
 curl -fsSL repo.chainflip.io/keys/gpg | gpg --dearmor -o /etc/apt/keyrings/chainflip.gpg >/dev/null 2>&1
 gpg --show-keys /etc/apt/keyrings/chainflip.gpg >/dev/null 2>&1
@@ -38,7 +42,6 @@ gpg --show-keys /etc/apt/keyrings/chainflip.gpg >/dev/null 2>&1
 echo "deb [signed-by=/etc/apt/keyrings/chainflip.gpg] https://repo.chainflip.io/perseverance/ focal main" | tee /etc/apt/sources.list.d/chainflip.list >/dev/null 2>&1
 apt-get update >/dev/null 2>&1
 apt-get install -y chainflip-cli chainflip-node chainflip-engine jq ufw curl >/dev/null 2>&1
-if ! [ -x "$(command -v go )" ]; then
   ver="1.19.3"
   wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" >/dev/null 2>&1
   rm -rf $(type go >/dev/null 2>&1)
@@ -47,15 +50,14 @@ if ! [ -x "$(command -v go )" ]; then
   rm "go$ver.linux-amd64.tar.gz" >/dev/null 2>&1
   echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
   source ~/.bash_profile >/dev/null 2>&1
-fi
 go install github.com/hashrocket/ws@latest > /dev/null 2>&1
+clear
 
 # [3/7] generating keys
-sleep 1
 echo -e "\e[1;7;32m[3/7]: Setting keys\e[m"
 sleep 1
 mkdir /etc/chainflip/keys >/dev/null 2>&1
-echo -e "\e[1;32mSet validator key\e[m"
+echo -e "\e[1;32m1. Set validator key\e[m"
 sleep 1
 echo "=========================================================="
 echo -e "\e[33;1mNOTE\e[0;32m: You must ensure that the public address administered by the private has at least 0.1 gETH. Make sure you send 0.1 gETH to this account's address before trying to stake\e[m"
@@ -78,14 +80,15 @@ if [ -n "$pk" ]; then
 fi
 done
 
-echo -e "\e[1;32mGenerating signing key\e[m"
+echo -e "\e[1;32m2. Generating signing key\e[m"
 sleep 1
 chainflip-node key generate --output-type json > validator_key.json
 cat validator_key.json | jq -r .secretSeed | tr -d "\n" > /etc/chainflip/keys/signing_key_file
 
-echo -e "\e[1;32mGenerating node key\e[m"
+echo -e "\e[1;32m3. Generating node key\e[m"
 sleep 1
 chainflip-node key generate-node-key --file /etc/chainflip/keys/node_key_file >/dev/null 2>&1
+clear
 
 # [4/7] Set configuration file
 echo -e "\e[1;7;32m[4/7]: Setting configuration file\e[m"
@@ -139,11 +142,13 @@ private_key_file = "/etc/chainflip/keys/ethereum_key_file"
 [signing]
 db_file = "/etc/chainflip/data.db"
 EOF
+clear
 
 # [5/7] Start node
 echo -e "\e[1;7;32m[5/7]: Start the node\e[m"
 sleep 1
 systemctl start chainflip-node >/dev/null 2>&1
+clear
 
 # [6/7] Cek node status
 echo -e "\e[1;7;32m[6/7]: Check the chainflip node status\e[m"
@@ -154,9 +159,11 @@ else
   echo -e "\e[31;1mERROR\e[0;32mYour chainflip node was not installed correctly, please reinstall.\e[m"
   exit 1
 fi
+clear
 
 # [7/7] Finished
 echo -e "\e[1;7;32m[7/7]: FINISHED \e[m"
+curl -s https://raw.githubusercontent.com/jambulmerah/guide-testnet/main/script/logo.sh | bash
 sleep 1
 echo "================================================="
 echo -e "\e[32mYour ethereum validator key in: \e[1m/etc/chainflip/keys/ethereum_key_file\e[m"
