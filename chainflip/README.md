@@ -14,11 +14,11 @@
 | Bandwith       | Recommended 1GBps connection, 100 GB bandwidth combined up/down per month                 |
 
 ### Sebelum memulai
-**1. Sipakan sepasang kunci publik key dan private key wallet ethreum**
-**2. Jika anda mengaktifkan firewall tolong buka port `30333` dan `8078`**
-**3. Wallet harus memiliki faucet goerli setidaknya `0.1 gETH` Dan token testnet flip atau `tFLIP` silahkan ambil di discordnya**
+* **1, Sipakan sepasang kunci publik key dan private key wallet ethreum**
+* **2, Jika anda mengaktifkan firewall tolong buka port `30333` dan `8078`**
+* **3, Wallet harus memiliki faucet goerli setidaknya `0.1 gETH` Dan token testnet flip atau `tFLIP` silahkan ambil di discordnya**
 Link faucet goerli: https://faucet.paradigm.xyz
-**4. Harus memiliki akun infura ethereum client api**
+* **4, Harus memiliki akun infura ethereum client api**
 Untuk saat ini kita menggunakan infura untuk ethereum clienntnya
 - 1. Buat akun atau login https://app.infura.io/dashboard
 - 2. Setelah masuk ke dashboard klik `Create new key`
@@ -26,7 +26,7 @@ Untuk saat ini kita menggunakan infura untuk ethereum clienntnya
 - 3. Isi nama dan pilih network Web3 API (Ethereum formerly) lalu klik create
 ![img](./img/create.png)
 - 4. Pilih jaringan goerli dan koneksi websocket
-![img](./img/goerli.png)
+![img](./img/goerli-ws.png)
 
 ## Auto installation
 ```
