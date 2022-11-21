@@ -1,7 +1,6 @@
 #!/bin/bash
 # Get logo
 curl -s https://raw.githubusercontent.com/jambulmerah/guide-testnet/main/script/logo.sh | bash
-sleep 2
 # Check root user
 if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     echo -e "\e[31;1mAborting\e[m: Please run as root user!"
@@ -104,9 +103,10 @@ read -p "$(printf "$wss")" api_wss
 
 if [[ $(echo $api_wss | grep wss://goerli.infura.io 2> /dev/null) ]]; then
     echo -e "\e[32mChecking websocket connection\e[m"
+    sleep 1
     if [[ $(ws $api_wss 2>&1 < /dev/null) == "EOF" ]];then
-	sleep 1
         echo -e "\e[32mConnected to $api_wss\e[m"
+	sleep 1
         break
     else
         echo -e "\e[31;1mERROR\e[0;32m: Can't connect to infura api wss\e[m"
@@ -162,8 +162,8 @@ fi
 clear
 
 # [7/7] Finished
-echo -e "\e[1;7;32m[7/7]: FINISHED \e[m"
 curl -s https://raw.githubusercontent.com/jambulmerah/guide-testnet/main/script/logo.sh | bash
+echo -e "\e[1;7;32m[7/7]: FINISHED \e[m"
 sleep 1
 echo "================================================="
 echo -e "\e[32mYour ethereum validator key in: \e[1m/etc/chainflip/keys/ethereum_key_file\e[m"
