@@ -16,7 +16,7 @@
 ### Sebelum memulai
 * **1, Sipakan sepasang kunci publik key dan private key wallet ethreum**
 * **2, Jika anda mengaktifkan firewall tolong buka port `30333` dan `8078`**
-* **3, Wallet harus memiliki faucet goerli setidaknya `0.1 gETH` Dan token testnet flip atau `tFLIP` silahkan ambil di discordnya**
+* **3, Wallet harus memiliki faucet goerli setidaknya `0.1 gETH`**
 Link faucet goerli: https://faucet.paradigm.xyz
 * **4, Harus memiliki akun infura atau alchemy ethereum client api**
 Untuk saat ini kita menggunakan infura untuk ethereum clienntnya
@@ -52,7 +52,7 @@ Itu artinya node sedang menyinkronkan mungkin membutuhkan waktu berabad abad nod
 ✨ Imported #3579 (0xa931…c03e)
 ```
 Itu artinya node telah sinkron penuh dan mulai mengimport block
-## Setalah node sinkron sepenuhnya
+## Setalah node sinkron sepenuhnya sialhkan ambil faucet tFLIP di discordnya untuk melanjutkan
 * Jika node telah sinkron penuh jalankan perintah:
 ```
 sudo systemctl start chainflip-engine
