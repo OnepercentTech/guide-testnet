@@ -69,8 +69,20 @@ server {
 }
 
 ```
-- ** `YOUR.RPC.SUBDOMAIN.SITE` ganti dengan subdomain rpc anda `http://YOUR_API_NODE_IP:26657` ganti dengan ip node dan port rpcnya sesuaikan yg di node**
+- ** `YOUR.RPC.SUBDOMAIN.SITE` ganti dengan subdomain rpc anda, `http://YOUR_API_NODE_IP:26657` ganti dengan ip node dan port rpcnya sesuaikan yg di node**
+##### 5. configurasi expolrer**
 
+```
+cp ~/explprer/ping.conf /etc/nginx/sites-enabled/<DOMAIN_EXPLORER>.conf
+```
+
+**ubah `<DOMAIN_EXPLORER>.conf` jadi domain explorer anda contoh `explorer.jembutmerah.dev`**
+
+```
+nano /etc/nginx/sites-enabled/<DOMAIN_EXPLORER>.conf
+```
+
+**Ubah nilai servername dari `_` domain explorer anda contoh `explorer.jembutmerah.dev`**
 ##### Test configurasi
 ```
 nginx -t 
@@ -81,7 +93,7 @@ nginx -t
 ##### Install ssl sertifikat
 ```
 sudo certbot --nginx --register-unsafely-without-email
-sudo certbot --nginx --redirect
+sudo certbot --nginx --no-redirect
 
 ```
 
@@ -124,7 +136,6 @@ nano ~/explorer/src/chains/mainnet/<CHAIN_NAME>.json
 ##### 4. Build
 ```
 cd ~/explorer
-cp ping.conf /etc/nginx/conf.d/
 yarn && yarn build
 
 ```
