@@ -95,6 +95,7 @@ git clone https://github.com/ping-pub/explorer
 ##### 2. (Optional) Hapus semua konfigurasi yang ada
 ```
 rm -rf ~/explorer/src/chains/mainnet/*
+
 ```
 ##### 3. Tambahkan konfig sendiri
 ```7
@@ -123,12 +124,15 @@ nano ~/explorer/src/chains/mainnet/<CHAIN_NAME>.json
 ##### 4. Build
 ```
 cd ~/explorer
+cp ping.conf /etc/nginx/conf.d/
 yarn && yarn build
+
 ```
 ##### 5. Hosting
 ```
 cp -r $HOME/explorer/dist/* /var/www/html
 sudo systemctl restart nginx
+
 ```
 ###### Special thanks to
 **ping.pub** https://github.com/ping-pub/explorer
