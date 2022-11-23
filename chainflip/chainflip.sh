@@ -17,7 +17,7 @@ if [[ $(lsof -i :8078,30333 | grep LISTEN) ]]; then
     exit 1
 fi
 
-echo -e "\e[1;32m\tChainflip node validator installation with infura api by jambulmerah\e[m"
+echo -e "\e[1;32m\tChainflip node validator installation with infura and alchemi api by jambulmerah\e[m"
 sleep 2
 # [1/7] update upgrade
 clear
@@ -43,11 +43,12 @@ apt-get update >/dev/null 2>&1
 apt-get install -y chainflip-cli chainflip-node chainflip-engine jq ufw curl >/dev/null 2>&1
   ver="1.19.3"
   wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" >/dev/null 2>&1
-  rm -rf $(type go >/dev/null 2>&1)
+  rm -rf $(type go >/dev/null 2>&1)8
   sudo rm -rf /usr/local/go >/dev/null 2>&1
   sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" >/dev/null 2>&1
   rm "go$ver.linux-amd64.tar.gz" >/dev/null 2>&1
   echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
+  echo "export GOROOT=/usr/local/go" >> ~/.bash_profile
   source ~/.bash_profile >/dev/null 2>&1
 go install github.com/hashrocket/ws@latest > /dev/null 2>&1
 clear
@@ -79,15 +80,97 @@ if [ -n "$pk" ]; then
 fi
 done
 
-echo -e "\e[1;32m2. Generating signing key\e[m"
-sleep 1
-chainflip-node key generate --output-type json > validator_key.json
-cat validator_key.json | jq -r .secretSeed | tr -d "\n" > /etc/chainflip/keys/signing_key_file
 
-echo -e "\e[1;32m3. Generating node key\e[m"
+# Set signing key
+echo -e "\e[1;32m2. Set signing key\e[m"
 sleep 1
-chainflip-node key generate-node-key --file /etc/chainflip/keys/node_key_file >/dev/null 2>&1
-clear
+while true; do
+echo "A. Recover existing signing key"
+echo "B. Genete new signing key"
+echo -n "Select your option: "
+read i
+case $i in
+[aA] ) recover_sign=true;;
+[bB] ) recover_sign=false;;
+* ) echo "Invalid option"; clear; continue;;
+esac
+while true; do
+if [[ $recover_sign == "true" ]]; then
+  read -p "Input your signing key: " sign_key
+if [ -n "$sign_key" ]; then
+    if [ ${#pk} -eq 64 ];then
+        echo -n $pk > /etc/chainflip/keys/signing_key_file
+        recover_sign_key=true
+        break
+    elif [ ${#pk} -eq 66 ] && ([ ${pk:0:2} == "0x" ] || [ ${pk:0:2} == "0X" ]);then
+        echo -n ${pk:2:64} > /etc/chainflip/keys/signing_key_file
+        recover_sign_key=true
+        break
+    else
+        echo -e "\e[31;1mERROR\e[0;32m: Signing key format is not correct please enter private key with 66 bytes including 0x or 64 bytes without 0x\e[m"
+        break
+    fi
+fi
+else
+  echo "Generating new signing key"
+  sleep 1
+  chainflip-node key generate --output-type json > validator_key.json
+  cat validator_key.json | jq -r .secretSeed | tr -d "\n" > /etc/chainflip/keys/signing_key_file
+  new_sign=true
+  break
+fi
+done
+
+if [[ -n $recover_sign_key || -n $new_sign ]]; then
+  break
+fi
+done
+
+
+# Set node key
+echo -e "\e[1;32m2. Set node key\e[m"
+sleep 1
+while true; do
+echo "A. Recover existing node key"
+echo "B. Genete new node key"
+echo -n "Select your option: "
+read i
+case $i in
+[aA] ) recover_node=true;;
+[bB] ) recover_node=false;;
+* ) echo "Invalid option"; clear; continue;;
+esac
+while true; do
+if [[ $recover_node == "true" ]]; then
+  read -p "Input your node key: " node_key
+if [ -n "$sign_key" ]; then
+    if [ ${#pk} -eq 64 ];then
+        echo -n $pk > /etc/chainflip/keys/node_key_file
+        recover_node_key=true
+        break
+    elif [ ${#pk} -eq 66 ] && ([ ${pk:0:2} == "0x" ] || [ ${pk:0:2} == "0X" ]);then
+        echo -n ${pk:2:64} > /etc/chainflip/keys/node_key_file
+        recover_node_key=true
+        break
+    else
+        echo -e "\e[31;1mERROR\e[0;32m: Node key format is not correct please enter private key with 66 bytes including 0x or 64 bytes without 0x\e[m"
+        break
+    fi
+fi
+else
+  echo "Generating new node key"
+  sleep 1
+  chainflip-node key generate-node-key --file /etc/chainflip/keys/node_key_file >/dev/null 2>&1
+  new_node=true
+  break
+fi
+done
+
+if [[ -n $recover_node_key || -n $new_node ]]; then
+  break
+fi
+done
+
 
 # [4/7] Set configuration file
 echo -e "\e[1;7;32m[4/7]: Setting configuration file\e[m"
@@ -97,11 +180,11 @@ ufw limit ssh >/dev/null 2>&1
 ufw allow 8078,30333/tcp >/dev/null 2>&1
 
 mkdir -p /etc/chainflip/config >/dev/null 2>&1
-wss="Enter your infura api wss: "
+wss="Enter your infura or alchemy api wss: "
 while true; do
 read -p "$(printf "$wss")" api_wss
 
-if [[ $(echo $api_wss | grep wss://goerli.infura.io 2> /dev/null) ]]; then
+if [[ $api_wss == "wss://goerli.infura.io" || "wss://eth-goerli.g.alchemy.com" ]]; then
     echo -e "\e[32mChecking websocket connection\e[m"
     sleep 1
     if [[ $(ws $api_wss 2>&1 < /dev/null) == "EOF" ]];then
@@ -109,12 +192,12 @@ if [[ $(echo $api_wss | grep wss://goerli.infura.io 2> /dev/null) ]]; then
 	sleep 1
         break
     else
-        echo -e "\e[31;1mERROR\e[0;32m: Can't connect to infura api wss\e[m"
-        wss="Please enter your correct infura api wss: "
+        echo -e "\e[31;1mERROR\e[0;32m: Can't connect to infura or alchemy api wss\e[m"
+        wss="Please enter your correct infura or alchemy api wss: "
     fi
 else
-    echo -e "\e[31;1mERROR: \e[0;32mPlease enter your infura api wss like wss://goerli.infura.io/v3/your_api_key\e[m"
-    wss="Please enter your correct infura api wss: "
+    echo -e "\e[31;1mERROR: \e[0;32mPlease enter your infura or alchemy api wss like wss://goerli.infura.io/v3/your_api_key\e[m"
+    wss="Please enter your correct infura or alchemy api wss: "
 fi
 done
 api_https=$(echo -n $api_wss | sed 's/wss/https/')

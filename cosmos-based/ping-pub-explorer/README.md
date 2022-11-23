@@ -73,7 +73,7 @@ server {
 ##### 5. configurasi expolrer**
 
 ```
-cp ~/explprer/ping.conf /etc/nginx/sites-enabled/<DOMAIN_EXPLORER>.conf
+cp ~/explorer/ping.conf /etc/nginx/sites-enabled/<DOMAIN_EXPLORER>.conf
 ```
 
 **ubah `<DOMAIN_EXPLORER>.conf` jadi domain explorer anda contoh `explorer.jembutmerah.dev`**

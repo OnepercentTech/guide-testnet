@@ -18,9 +18,12 @@
 * **2, Jika anda mengaktifkan firewall tolong buka port `30333` dan `8078`**
 * **3, Wallet harus memiliki faucet goerli setidaknya `0.1 gETH` Dan token testnet flip atau `tFLIP` silahkan ambil di discordnya**
 Link faucet goerli: https://faucet.paradigm.xyz
-* **4, Harus memiliki akun infura ethereum client api**
+* **4, Harus memiliki akun infura atau alchemy ethereum client api**
 Untuk saat ini kita menggunakan infura untuk ethereum clienntnya
-- 1. Buat akun atau login https://app.infura.io/dashboard
+- 1. Buat akun atau login
+**https://app.infura.io/dashboard**
+**https://dashboard.alchemy.com**/
+**Contoh di sini saya menggunakan akun infura**
 - 2. Setelah masuk ke dashboard klik `Create new key`
 ![img](./img/create-key.png)
 - 3. Isi nama dan pilih network Web3 API (Ethereum formerly) lalu klik create
