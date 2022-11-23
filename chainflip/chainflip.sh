@@ -85,13 +85,13 @@ done
 echo -e "\e[1;32m2. Set signing key\e[m"
 sleep 1
 while true; do
-echo "A. Recover existing signing key"
-echo "B. Genete new signing key"
+echo "A. Generate new signing key"
+echo "B. Recover existing signing key"
 echo -n "Select your option: "
 read i
 case $i in
-[aA] ) recover_sign=true;;
-[bB] ) recover_sign=false;;
+[bB] ) recover_sign=true;;
+[aA] ) recover_sign=false;;
 * ) echo "Invalid option"; clear; continue;;
 esac
 while true; do
@@ -128,16 +128,16 @@ done
 
 
 # Set node key
-echo -e "\e[1;32m2. Set node key\e[m"
+echo -e "\e[1;32m3. Set node key\e[m"
 sleep 1
 while true; do
-echo "A. Recover existing node key"
-echo "B. Genete new node key"
+echo "A. Generate new node key"
+echo "B. Recover existing node key"
 echo -n "Select your option: "
 read i
 case $i in
-[aA] ) recover_node=true;;
-[bB] ) recover_node=false;;
+[bB] ) recover_node=true;;
+[aA] ) recover_node=false;;
 * ) echo "Invalid option"; clear; continue;;
 esac
 while true; do
