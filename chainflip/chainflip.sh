@@ -115,7 +115,7 @@ else
   echo "Generating new signing key"
   sleep 1
   chainflip-node key generate --output-type json > validator_key.json
-  cat validator_key.json | jq -r .secretSeed | tr -d "\n" > /etc/chainflip/keys/signing_key_file
+  cat validator_key.json | jq -r .secretSeed | sed -z 's/\n//g;s/0x//' > /etc/chainflip/keys/signing_key_file
   new_sign=true
   break
 fi
