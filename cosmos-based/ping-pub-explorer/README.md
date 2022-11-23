@@ -141,7 +141,7 @@ yarn && yarn build
 ```
 ##### 5. Hosting
 ```
-cp -r $HOME/explorer/dist/* /var/www/html
+cp -r $HOME/explorer/dist/* /usr/share/nginx/html
 sudo systemctl restart nginx
 
 ```
