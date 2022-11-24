@@ -93,7 +93,7 @@ nginx -t
 ##### Install ssl sertifikat
 ```
 sudo certbot --nginx --register-unsafely-without-email
-sudo certbot --nginx --no-redirect
+sudo certbot --nginx --redirect
 
 ```
 
