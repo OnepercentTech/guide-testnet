@@ -1,4 +1,3 @@
-#!/bin/bash
 # Set nodename
 clear
 nodename_prompt="What nodename do you prefer...? "
