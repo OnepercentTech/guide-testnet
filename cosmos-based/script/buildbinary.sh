@@ -1,3 +1,4 @@
+set -e
 clear
 echo -e "The process is running...\nPlease wait and don't kill the process until it's finished!!!"
 echo -e -n "\e[36;1m"

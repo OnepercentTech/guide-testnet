@@ -56,6 +56,7 @@ while true; do
     done
     ports=$(echo -n ${all_ports[@]} | sed -e 's/ /,/g')
     if [[ ! $(lsof -i tcp:${ports} | grep -e "(LISTEN)" | awk '{print $9}' | grep -o '[0-9]\+' 2> /dev/null) ]]; then
+      sleep 2
       break
     else
       echo -e "Please change the wrong port\n"
@@ -141,8 +142,8 @@ done
 
 # Init node
 clear
-echo -n -e "Initializing "$project_name" node..."
-sleep 1
+echo -n -e "Initializing and configuring "$project_name" node..."
+sleep 2
 
 # Init testnet
 if [[ $join_test == true ]]; then
