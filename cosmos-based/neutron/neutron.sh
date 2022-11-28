@@ -67,7 +67,8 @@ echo -n "What do you like...? "
   echo "[0] Exit"
   read -p "What chain do you want to run? " opt
   if [[ ! $opt == [0-2] ]]; then
-    continue elif [[ $opt == "0" ]]; then
+    continue
+  elif [[ $opt == "0" ]]; then
     exit
   elif [[ $opt -eq 1 ]]; then
     clear
