@@ -126,7 +126,7 @@ mainnetSoon(){
     clear
     . <(curl -sSL "$sync_method")
     clear
-    sleep
+    sleep 1
     break
   fi
 done
