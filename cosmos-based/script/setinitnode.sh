@@ -166,7 +166,7 @@ elif [[ $join_main == true ]]; then
   $bin_name config keyring-backend test --home $chain_dir
 fi
 
-$bin_name config node tpc://localhost:$rpc_port --home $chain_dir
+$bin_name config node tcp://localhost:$rpc_port --home $chain_dir
 pruning="custom"
 pruning_keep_recent="100"
 pruning_keep_every="2000"
