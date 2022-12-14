@@ -148,8 +148,8 @@ sleep 2
 # Init testnet
 if [[ $join_test == true ]]; then
   $bin_name init "$nodename" --chain-id $testnet_chain_id --home $chain_dir >/dev/null 2>&1
-  curl -sSL $testnet_genesis > $chain_dir/config/genesis.json
-  curl -sSL $testnet_addrbook > $chain_dir/config/addrbook.json
+  curl -sSL $testnet_genesis > $chain_dir/config/genesis.json >/dev/null 2>&1
+  curl -sSL $testnet_addrbook > $chain_dir/config/addrbook.json >/dev/null 2>&1
   sed -i -e "s/^seeds *=.*/seeds = \"$testnet_seeds\"/; s/^persistent_peers *=.*/persistent_peers = \"$testnet_peers\"/" $chain_dir/config/config.toml
   sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$testnet_denom\"/" $chain_dir/config/app.toml
   $bin_name config chain-id $testnet_chain_id --home $chain_dir
@@ -158,8 +158,8 @@ if [[ $join_test == true ]]; then
 # Init mainnet
 elif [[ $join_main == true ]]; then
   $bin_name init "$nodename" --chain-id $mainnet_chain_id --home $chain_dir >/dev/null 2>&1
-  curl -sSL $mainnet_genesis > $chain_dir/config/genesis.json
-  curl -sSL $mainnet_addrbook > $chain_dir/config/addrbook.json
+  curl -sSL $mainnet_genesis > $chain_dir/config/genesis.json >/dev/null 2>&1
+  curl -sSL $mainnet_addrbook > $chain_dir/config/addrbook.json >/dev/null 2>&1
   sed -i -e "s/^seeds *=.*/seeds = \"$mainnet_seeds\"/; s/^persistent_peers *=.*/persistent_peers = \"$mainnet_peers\"/" $chain_dir/config/config.toml
   sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$mainnet_denom\"/" $chain_dir/config/app.toml
   $bin_name config chain-id $mainnet_chain_id --home $chain_dir
@@ -203,9 +203,9 @@ LimitNOFILE=4096
 
 Environment="DAEMON_HOME="$chain_dir""
 Environment="DAEMON_NAME="$bin_name""
-Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=true"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=false"
 Environment="DAEMON_RESTART_AFTER_UPGRADE=true"
-Environment="UNSAFE_SKIP_BACKUP=false"
+Environment="UNSAFE_SKIP_BACKUP=true"
 
 [Install]
 WantedBy=multi-user.target
