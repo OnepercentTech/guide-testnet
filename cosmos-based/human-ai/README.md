@@ -15,5 +15,5 @@
 
 ## humans testnet and mainnet auto installation
 ```
-bash -c "$(curl -sSL https://raw.githubusercontent.com/jambulmerah/guide-testnet/main/cosmos-based/humans/humans.sh)"
+bash -c "$(curl -sSL https://raw.githubusercontent.com/jambulmerah/guide-testnet/main/cosmos-based/human-ai/humans.sh)"
 ```
