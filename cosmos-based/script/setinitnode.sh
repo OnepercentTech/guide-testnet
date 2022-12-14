@@ -148,7 +148,7 @@ sleep 2
 # Init testnet
 if [[ $join_test == true ]]; then
   $bin_name init "$nodename" --chain-id $testnet_chain_id --home $chain_dir >/dev/null 2>&1
-  curl -sSL $testnet_genesis > $chain_dir/config/genesis.json >/dev/null 2>&1
+  curl -sSL $testnet_genesis -o $chain_dir/config/genesis.json
   sed -i -e "s/^seeds *=.*/seeds = \"$testnet_seeds\"/; s/^persistent_peers *=.*/persistent_peers = \"$testnet_peers\"/" $chain_dir/config/config.toml
   sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$testnet_denom\"/" $chain_dir/config/app.toml
   $bin_name config chain-id $testnet_chain_id --home $chain_dir
@@ -157,7 +157,7 @@ if [[ $join_test == true ]]; then
 # Init mainnet
 elif [[ $join_main == true ]]; then
   $bin_name init "$nodename" --chain-id $mainnet_chain_id --home $chain_dir >/dev/null 2>&1
-  curl -sSL $mainnet_genesis > $chain_dir/config/genesis.json >/dev/null 2>&1
+  curl -sSL $mainnet_genesis -o $chain_dir/config/genesis.json
   sed -i -e "s/^seeds *=.*/seeds = \"$mainnet_seeds\"/; s/^persistent_peers *=.*/persistent_peers = \"$mainnet_peers\"/" $chain_dir/config/config.toml
   sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$mainnet_denom\"/" $chain_dir/config/app.toml
   $bin_name config chain-id $mainnet_chain_id --home $chain_dir
