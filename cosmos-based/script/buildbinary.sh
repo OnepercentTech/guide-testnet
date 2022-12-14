@@ -11,12 +11,12 @@ DEBIAN_FRONTEND=noninteractive \
   -o Dpkg::Options::=--force-confold \
   -o Dpkg::Options::=--force-confdef \
   -y --allow-downgrades --allow-remove-essential --allow-change-held-packages >/dev/null 2>&1
-echo "✅️"
+echo "✔️"
 sleep 1
 
 # Installing dependencies
 echo -n -e "[2/4] Installing dependencies...\t\t"
-sudo apt install curl build-essential git wget jq make gcc tmux lz4 -y >/dev/null 2>&1
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y >/dev/null 2>&1
 ver="1.19.3"
 cd ~ >/dev/null 2>&1
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" >/dev/null 2>&1
@@ -27,7 +27,7 @@ rm "go$ver.linux-amd64.tar.gz" >/dev/null 2>&1
 echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
 echo "export GOROOT=/usr/local/go" >> ~/.bash_profile
 source ~/.bash_profile >/dev/null 2>&1
-echo "✅️"
+echo "✔️"
 sleep 1
 
 # Cloning binary
@@ -35,7 +35,7 @@ echo -n -e "[3/4] Cloning binary repo...\t\t\t"
 cd ~
 rm -rf $repo_dir >/dev/null 2>&1
 git clone $repo >/dev/null 2>&1
-echo "✅️"
+echo "✔️"
 sleep 1
 
 # Build binary for testnet
@@ -45,7 +45,7 @@ if [[ $join_test == "true" ]]; then
   git fetch --all >/dev/null 2>&1
   git checkout $testnet_repo_tag >/dev/null 2>&1
   make install >/dev/null 2>&1
-  echo -e "\e[0;96m✅️"
+  echo -e "\e[0;96m✔️"
   sleep 1
 
 # Build binary for mainnet
@@ -55,7 +55,7 @@ elif [[ $join_main == "true" ]]; then
   git fetch --all >/dev/null 2>&1
   git checkout $mainnet_repo_tag >/dev/null 2>&1
   make install >/dev/null 2>&1
-  echo -e "\e[0;96m✅️"
+  echo -e "\e[0;96m✔️"
   sleep 2
 fi
 
@@ -64,6 +64,6 @@ if [[ $with_cosmovisor == "true" ]]; then
   echo -e -n "\e[96;1m[+/+] Installing cosmovisor...\e[0;96m\t\t\t"
   cosmovisor_url="github.com/cosmos/cosmos-sdk/cosmovisor/cmd/cosmovisor@latest"
   go install $cosmovisor_url >/dev/null 2>&1
-  echo "✅️"
+  echo "✔️"
   sleep 2
 fi
