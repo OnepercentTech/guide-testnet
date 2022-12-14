@@ -27,7 +27,7 @@ rm "go$ver.linux-amd64.tar.gz" >/dev/null 2>&1
 echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
 echo "export GOROOT=/usr/local/go" >> ~/.bash_profile
 source ~/.bash_profile >/dev/null 2>&1
-sudo curl https://get.ignite.com/cli! | sudo bash >/dev/null 2>&1
+sudo curl https://get.ignite.com/cli! >/dev/null 2>&1 | sudo bash >/dev/null 2>&1
 echo "✅️"
 sleep 1
 
@@ -45,7 +45,7 @@ if [[ $join_test == "true" ]]; then
   cd ~/$repo_dir >/dev/null 2>&1
   git fetch --all >/dev/null 2>&1
   git checkout $testnet_repo_tag >/dev/null 2>&1
-  make install >/dev/null 2>&1 || ignite chain build
+  make install >/dev/null 2>&1 || ignite chain build >/dev/null 2>&1
   echo -e "\e[0;96m✅️"
   sleep 1
 
@@ -55,7 +55,7 @@ elif [[ $join_main == "true" ]]; then
   cd ~/$repo_dir >/dev/null 2>&1
   git fetch --all >/dev/null 2>&1
   git checkout $mainnet_repo_tag >/dev/null 2>&1
-  make install >/dev/null 2>&1 || ignite chain build
+  make install >/dev/null 2>&1 || ignite chain build >/dev/null 2>&1
   echo -e "\e[0;96m✅️"
   sleep 2
 fi

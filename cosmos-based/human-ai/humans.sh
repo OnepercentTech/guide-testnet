@@ -20,7 +20,7 @@ testnet_genesis="https://snapshots.polkachu.com/testnet-genesis/humans/genesis.j
 testnet_addrbook="https://snapshots.polkachu.com/testnet-addrbook/humans/addrbook.json"
 testnet_sseds=""
 testnet_peers=`curl -sS $testnet_statesync_rpc/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's/\n/,/g;s/.$//'`
-testnet_snapshot=`curl -s https://snapshots.polkachu.com/testnet-snapshots/humans/ | grep -o ">humans.*\.tar.lz4" | tr -d ">"`
+testnet_snapshot=`curl -s https://polkachu.com/testnets/humans/snapshots | grep -o ">humans.*\.tar.lz4" | tr -d ">" | head -1`
 testnet_snapshot_url="https://snapshots.polkachu.com/testnet-snapshots/humans/${testnet_snapshot}"
 testnet_snapshot_provider="polkachu.com"
 
@@ -33,7 +33,7 @@ mainnet_genesis=""
 testnet_addrbook="https://snapshots.polkachu.com/testnet-addrbook/humans/addrbook.json"
 mainnet_seeds=""
 mainnet_peers=""
-mainnet_snapshot=(`curl -s https://snapshots.polkachu.com/testnet-snapshots/humans/ | grep -o ">humans.*\.tar.lz4" | tr -d ">"`)
+mainnet_snapshot=(`curl -s https://polkachu.com/testnets/humans/snapshots | grep -o ">humans.*\.tar.lz4" | tr -d ">" | head -1`)
 mainnet_snapshot_url="https://snapshots.polkachu.com/testnet-snapshots/humans/${testnet_snapshot}"
 mainnet_snapshot_provider="polkachu.com"
 
