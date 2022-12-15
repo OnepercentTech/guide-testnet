@@ -16,7 +16,7 @@ sleep 1
 
 # Installing dependencies
 echo -n -e "[2/4] Installing dependencies...\t\t"
-sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y >/dev/null 2>&1
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool xmlstarlet -y >/dev/null 2>&1
 ver="1.19.3"
 cd ~ >/dev/null 2>&1
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" >/dev/null 2>&1
