@@ -31,7 +31,7 @@ BLOCK_HEIGHT=$((LATEST_HEIGHT - 500)); \
 TRUST_HASH=$(curl -s "$mainnet_rpc/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
   if [[ ("$BLOCK_HEIGHT" != "") && ("$TRUST_HASH" != "") ]]; then
     sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
-    s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$mainnet_rpc,$testnet_rpc\"| ; \
+    s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$mainnet_rpc,$mainnet_rpc\"| ; \
     s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
     s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $chain_dir/config/config.toml
     sed -i -E "s|snapshot-interval = .*|snapshot-interval = 500|g" $chain_dir/config/app.toml
@@ -96,12 +96,13 @@ elif [[ $sync -eq 1 ]]; then
         echo "Hemmm failed to fetch snapshot data for $project_name"
     fi
 elif [[ $sync -eq 2 ]]; then
-    if [[ $join_test == "true" && $(curl -s $testnet_rpc | jq -r .result.node_info.network) == $testnet_chain_id ]]; then
+    if [[ $join_test == "true" && $(curl -s $testnet_rpc | jq -r '.result.node_info.network') == $testnet_chain_id ]]; then
         viaStatesync; startService; break
-    elif [[ $join_main == "true" && $(curl -s $mainnet_rpc | jq -r .result.node_info.network) == $mainnet_chain_id ]]; then
+    elif [[ $join_main == "true" && $(curl -s $mainnet_rpc | jq -r '.result.node_info.network') == $mainnet_chain_id ]]; then
         viaStatesync; startService; break
     else
         echo "Hemmm failed to to fetch statesync for $project_name"
+        sleep 2
     fi
 elif [[ $sync -eq 3 ]]; then
   startService; break
