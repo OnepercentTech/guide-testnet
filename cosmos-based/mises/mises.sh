@@ -30,7 +30,7 @@ mainnet_repo_tag="1.0.4"
 mainnet_rpc="https://mises-rpc.jambulmerah.dev:443"
 mainnet_genesis="https://e1.mises.site:443/genesis"
 mainnet_seeds=""
-testnet_peers="`curl -sS $mainnet_rpc/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's/\n/,/g;s/.$//'`"
+mainnet_peers="`curl -sS $mainnet_rpc/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's/\n/,/g;s/.$//'`"
 mainnet_snapshot=
 mainnet_snapshot_url=
 mainnet_snapshot_provider=
@@ -139,3 +139,4 @@ echo -e "=============== $project_name node setup finished ==================="
 echo -e "To check logs: \tjournalctl -u $bin_name -f -o cat"
 echo -e "To check sync status: \tcurl -s localhost:${rpc_port}/status | jq .result.sync_info"
 echo -e ""$bline"\e[m"
+
