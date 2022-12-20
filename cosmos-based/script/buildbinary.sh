@@ -17,7 +17,7 @@ sleep 1
 # Installing dependencies
 echo -n -e "[2/4] Installing dependencies...\t\t"
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool xmlstarlet -y >/dev/null 2>&1
-ver="1.19.3"
+ver="1.19.4"
 cd ~ >/dev/null 2>&1
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" >/dev/null 2>&1
 sudo rm -rf $(which go) >/dev/null 2>&1
@@ -57,7 +57,7 @@ elif [[ $join_main == "true" ]]; then
   git checkout $mainnet_repo_tag >/dev/null 2>&1
   make install >/dev/null 2>&1 || ignite chain build >/dev/null 2>&1
   echo -e "\e[0;96m✅️"
-  sleep 2
+  sleep 1
 fi
 
 # Install cosmovisor

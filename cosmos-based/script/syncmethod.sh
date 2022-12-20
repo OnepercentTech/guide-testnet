@@ -5,14 +5,14 @@ while true; do
 # Testnet statesync
 if [[ $join_test == "true" ]]; then
 LATEST_HEIGHT=$(curl -s $testnet_statesync_rpc/block | jq -r .result.block.header.height); \
-BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000)); \
+BLOCK_HEIGHT=$((LATEST_HEIGHT - 500)); \
 TRUST_HASH=$(curl -s "$testnet_statesync_rpc/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
   if [[ ("$BLOCK_HEIGHT" != "") && ("$TRUST_HASH" != "") ]]; then
     sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
     s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$testnet_statesync_rpc,$testnet_statesync_rpc\"| ; \
     s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
     s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $chain_dir/config/config.toml
-    sed -i -E "s|snapshot-interval = .*|snapshot-interval = 2000|g" $chain_dir/config/app.toml
+    sed -i -E "s|snapshot-interval = .*|snapshot-interval = 500|g" $chain_dir/config/app.toml
     sed -i -E "s|snapshot-keep-recent = .*|snapshot-keep-recent = 5|g" $chain_dir/config/app.toml
     break
   else
@@ -27,14 +27,14 @@ elif [[ $join_main == "true" ]]; then
 
 # Mainnet state sync
 LATEST_HEIGHT=$(curl -s $mainnet_statesync_rpc/block | jq -r .result.block.header.height); \
-BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000)); \
+BLOCK_HEIGHT=$((LATEST_HEIGHT - 500)); \
 TRUST_HASH=$(curl -s "$mainnet_statesync_rpc/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
   if [[ ("$BLOCK_HEIGHT" != "") && ("$TRUST_HASH" != "") ]]; then
     sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
     s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$mainnet_statesync_rpc,$testnet_statesync_rpc\"| ; \
     s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
     s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $chain_dir/config/config.toml
-    sed -i -E "s|snapshot-interval = .*|snapshot-interval = 2000|g" $chain_dir/config/app.toml
+    sed -i -E "s|snapshot-interval = .*|snapshot-interval = 500|g" $chain_dir/config/app.toml
     sed -i -E "s|snapshot-keep-recent = .*|snapshot-keep-recent = 5|g" $chain_dir/config/app.toml
     break
   else
@@ -55,15 +55,11 @@ if [[ $join_test == "true" ]]; then
   if [[ $testnet_snapshot != "" ]]; then
     rm -rf $chain_dir/data
     curl $testnet_snapshot_url | lz4 -dc - | tar -xf - -C $chain_dir
-  else
-    echo -e "Hmm, failed to fetch snapshot url..."; sleep 3
   fi
 elif [[ $join_main == "true" ]]; then
   if [[ $mainnet_snapshot != "" ]]; then
     rm -rf $chain_dir/data
     curl $mainnet_snapshot_url | lz4 -dc - | tar -xf - -C $chain_dir
-  else
-    echo -e "Hmm, failed to fetch snapshot url..."; sleep 3
   fi
 fi
 }
@@ -92,9 +88,21 @@ read -p "What do you like...? " sync
 if [[ ! $sync == [1-3] ]]; then
   clear; continue
 elif [[ $sync -eq 1 ]]; then
-  viaSnapshot; startService; break
+    if [[ $join_test == "true" && -n $testnet_snapshot ]]; then
+        viaSnapshot; startService; break
+    elif [[ $join_main == "true" && -n $mainnet_snapshot ]]; then
+        viaSnapshot; startService; break
+    else
+        echo "Hemmm failed to fetch snapshot data for $project_name"
+    fi
 elif [[ $sync -eq 2 ]]; then
-  viaStatesync; startService; break
+    if [[ $join_test == "true" && $(curl -s $testnet_statesync_rpc | jq -r .result.node_info.network) == $testnet_chain_id ]]; then
+        viaStatesync; startService; break
+    elif [[ $join_main == "true" && $(curl -s $mainnet_statesync_rpc | jq -r .result.node_info.network) == $mainnet_chain_id ]]; then
+        viaStatesync; startService; break
+    else
+        echo "Hemmm failed to to fetch statesync for $project_name"
+    fi
 elif [[ $sync -eq 3 ]]; then
   startService; break
 fi

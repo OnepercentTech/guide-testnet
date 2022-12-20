@@ -5,35 +5,35 @@ echo -e "\e[96m"
 #     START configuration by https://jambulmerah.dev     #
 ##########################################################
 # Project name
-project_name="quicksilver"
-repo="https://github.com/ingenuity-build/quicksilver.git"
-repo_dir="quicksilver"
-chain_dir="$HOME/.quicksilverd"
-bin_name="quicksilverd"
+project_name="mises"
+repo="https://github.com/mises-id/mises-tm.git"
+repo_dir="mises-tm"
+chain_dir="$HOME/.misestm"
+bin_name="misestmd"
 
 # Testnet
-testnet_denom="uqck"
-testnet_chain_id="innuendo-4"
-testnet_repo_tag="v0.10.8"
-testnet_rpc="https://quicksilver-testnet-rpc.jambulmerah.dev:443"
-testnet_genesis="https://raw.githubusercontent.com/ingenuity-build/testnets/main/innuendo/genesis.json"
-testnet_seeds=""
-testnet_peers="`curl -sS $testnet_rpc/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's/\n/,/g;s/.$//'`"
-testnet_snapshot="`curl -s https://snapshots.polkachu.com/testnet-snapshots | xmlstarlet fo | grep -o "quicksilver.*\.tar.lz4" | head -1`"
-testnet_snapshot_url="https://snapshots.polkachu.com/testnet-snapshots/${testnet_snapshot}"
-testnet_snapshot_provider="Polkachu.com"
+testnet_denom="umis"
+testnet_chain_id=
+testnet_repo_tag=
+testnet_rpc=
+testnet_genesis=
+testnet_seeds=
+testnet_peers=
+testnet_snapshot=
+testnet_snapshot_url=
+testnet_snapshot_provider=
 
 # Mainnet
-mainnet_denom="uqck"
-mainnet_chain_id="quicksilver-1"
-mainnet_repo_tag="v1.0.0"
-mainnet_statesync_rpc="https://quicksilver-rpc.jambulmerah.dev:443"
-mainnet_genesis="https://raw.githubusercontent.com/ingenuity-build/mainnet/main/genesis.json"
+mainnet_denom="umis"
+mainnet_chain_id="mainnnet"
+mainnet_repo_tag="1.0.4"
+mainnet_statesync_rpc="https://mises-rpc.jambulmerah.dev:443"
+mainnet_genesis="https://e1.mises.site:443/genesis"
 mainnet_seeds=""
 testnet_peers="`curl -sS $mainnet_statesync_rpc/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's/\n/,/g;s/.$//'`"
-mainnet_snapshot="`curl -s https://snapshots.polkachu.com/snapshots | xmlstarlet fo | grep -o "quicksilver.*\.tar.lz4" | head -1`"
-mainnet_snapshot_url="https://snapshots.polkachu.com/snapshots/${mainnet_snapshot}"
-mainnet_snapshot_provider="Polkachu.com"
+mainnet_snapshot=
+mainnet_snapshot_url=
+mainnet_snapshot_provider=
 
 # Script
 bline="================================================================="
