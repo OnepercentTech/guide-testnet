@@ -1,6 +1,6 @@
 # Set nodename
 clear
-nodename_prompt="What nodename do you prefer...? "
+nodename_prompt="What nodename do you prefer...? => "
 echo -e "Next, we need to give your "$project_name" node a nickname..."
 while true; do
   read -p "$(printf "$nodename_prompt")" nodename

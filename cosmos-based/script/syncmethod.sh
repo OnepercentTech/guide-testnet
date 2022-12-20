@@ -96,9 +96,9 @@ elif [[ $sync -eq 1 ]]; then
         echo "Hemmm failed to fetch snapshot data for $project_name"
     fi
 elif [[ $sync -eq 2 ]]; then
-    if [[ $join_test == "true" && $(curl -s $testnet_rpc | jq -r '.result.node_info.network') == $testnet_chain_id ]]; then
+    if [[ $join_test == "true" && $(curl -s $testnet_rpc/status | jq -r '.result.node_info.network') == $testnet_chain_id ]]; then
         viaStatesync; startService; break
-    elif [[ $join_main == "true" && $(curl -s $mainnet_rpc | jq -r '.result.node_info.network') == $mainnet_chain_id ]]; then
+    elif [[ $join_main == "true" && $(curl -s $mainnet_rpc/status | jq -r '.result.node_info.network') == $mainnet_chain_id ]]; then
         viaStatesync; startService; break
     else
         echo "Hemmm failed to to fetch statesync for $project_name"
