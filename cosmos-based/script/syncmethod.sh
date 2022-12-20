@@ -66,9 +66,9 @@ fi
 
 # Without snapshot and state sync
 startService(){
-sudo systemctl daemon-reload 2>&1 >/dev/null
-sudo systemctl enable $bin_name 2>&1 >/dev/null
-sudo systemctl restart $bin_name 2>&1 >/dev/null
+sudo systemctl daemon-reload >/dev/null 2>&1
+sudo systemctl enable $bin_name >/dev/null 2>&1
+sudo systemctl restart $bin_name >/dev/null 2>&1
 }
 
 while true; do

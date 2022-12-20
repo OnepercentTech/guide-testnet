@@ -1,5 +1,8 @@
 #!/bin/bash
 clear
+if [[ $(type jq curl 2>&1 >/dev/null) ]]; then
+  sudo apt update >/dev/null 2>&1 && sudo apt install jq curl -y >/dev/null 2>&1
+fi
 echo -e "\e[96m"
 ##########################################################
 #     START configuration by https://jambulmerah.dev     #
@@ -44,12 +47,11 @@ sync_method="https://raw.githubusercontent.com/jambulmerah/guide-testnet/main/co
 #      END configuration by https://jambulmerah.dev      #
 ##########################################################
 
-
-while true; do
 if [[ -d $chain_dir ]]; then
   echo "Aborting: $project_nect chain directory in $chain_dir exists"
   exit 1
 fi
+
 cosmovisorOpt(){
 echo "[1] Run with cosmovisor..."
 echo "[2] Run without cosmovisor..."
@@ -57,81 +59,81 @@ echo "[3] Back"
 echo "[0] Exit"
 echo -n "What do you like...? "
 }
+runStart()
+{
+    clear; . <(curl -sSL "$build_binary")
+    clear; . <(curl -sSL "$set_init_node")
+    clear; . <(curl -sSL "$sync_method")
+    clear; sleep 1
+}
+
+while true; do
   curl -s https://raw.githubusercontent.com/jambulmerah/guide-testnet/main/script/logo.sh | bash
   echo $bline
   echo "Welcome to "$project_name" node installer by jambulmerah | Cosmos⚛️Lovers❤️"
   echo $bline
-  echo
-  echo "[1] Install "$project_name" mainnet node("$mainnet_chain_id")"
+  echo "Mainnet info:"
+  echo "Chain ID: $mainnet_chain_id"
+  echo "Binary version: $(curl -s $mainnet_rpc/abci_info | jq -r .result.response.version)"
+  echo "Block height: $(curl -s $mainnet_rpc/status | jq -r .result.sync_info.latest_block_height)"
+  echo $bline
+  echo "Testnet info:"
+  echo "Chain ID: $testnet_chain_id"
+  echo "Binary version: $(curl -s $testnet_rpc/abci_info | jq -r .result.response.version)"
+  echo "Block height: $(curl -s $testnet_rpc/status | jq -r .result.sync_info.latest_block_height)"
+  echo $bline
+  echo "[1] Install "$project_name" mainnet node ("$mainnet_chain_id")"
   echo "[2] Install "$project_name" testnet node ("$testnet_chain_id")"
   echo "[0] Exit"
-  read -p "What chain do you want to run? " opt
-  if [[ ! $opt == [0-2] ]]; then
-    continue
-  elif [[ $opt == "0" ]]; then
-    exit
-  elif [[ $opt -eq 1 ]]; then
-    clear
-    echo -e ""$project_name" for mainnet will be available soon"
-    sleep 3
-mainnetSoon(){
-    while true; do
-      clear
-      echo "Choose your service to run node "$project_name" "$testnet_chain_id""
-      cosmovisorOpt
-      read i
-      if [[ ! $i == [0-3] ]]; then
-	continue
-      elif [[ $i == "0" ]]; then
-        exit
-      elif [[ $i -eq 1 ]]; then
-        join_test=true
-	with_cosmovisor=true
-        break
-      elif [[ $i -eq 2 ]]; then
-        join_main=true
-        break
-      elif [[ $i -eq 3 ]]; then
-        break
-      fi
-    done
-}
-  elif [[ $opt -eq 2 ]]; then
-    while true; do
-      clear
-      echo "Choose your service to run node "$project_name" "$testnet_chain_id""
-      cosmovisorOpt
-      read i
-      if [[ ! $i == [0-3] ]]; then
-	continue
-      elif [[ $i == "0" ]]; then
-        exit
-      elif [[ $i -eq 1 ]]; then
-        join_test=true
-	with_cosmovisor=true
-        break
-      elif [[ $i -eq 2 ]]; then
-        join_test=true
-        break
-      elif [[ $i -eq 3 ]]; then
-        break
-      fi
-    done
-  fi
+  read -p "What chain do you want to run? " x
+    case $x in
+      [1] ) if [[ -n $mainnet_chain_id ]]; then
+	      while true; do
+		clear
+	        echo "Choose your service to run node "$project_name" "$mainnet_chain_id""
+		cosmovisorOpt
+		read i
+		case $i in
+		  [1] ) join_main=true; with_cosmovisor=true
+			runStart; break;;
+		  [2] ) join_main=true; runStart; break;;
+		  [3] ) break;;
+		  [0] ) exit 1;;
+		   *  ) clear;;
+		esac
+	      done
+	    else
+	      echo "Mainnet not available, please select another network"
+	      sleep 1.5; continue
+	    fi;;
+
+      [2] ) if [[ -n $testnet_chain_id ]]; then
+	      while true; do
+		clear
+	        echo "Choose your service to run node "$project_name" "$testnet_chain_id""
+		cosmovisorOpt
+		read i
+		case $i in
+		  [1] ) join_test=true; with_cosmovisor=true
+			runStart; break;;
+		  [2] ) join_test=true; runStart; break;;
+		  [3] ) break;;
+		  [0] ) exit 1;;
+		   *  ) clear;;
+		esac
+	      done
+	    else
+	      echo "Testnet not available, please select another network"
+	      sleep 1.5; continue
+	    fi;;
+      [0] ) exit 1;;
+       *  ) clear;;
+    esac
   if [[ $join_test == "true" || $join_main == "true" ]]; then
-    clear
-    . <(curl -sSL "$build_binary")
-    clear
-    . <(curl -sSL "$set_init_node")
-    clear
-    . <(curl -sSL "$sync_method")
-    clear
-    sleep 1
     break
   fi
 done
-clear
-echo -e '=============== $project_name node setup finished ==================='
+echo -e "=============== $project_name node setup finished ==================="
 echo -e "To check logs: \tjournalctl -u $bin_name -f -o cat"
-echo -e "To check sync status: \tcurl -s localhost:${rpc_port}/status | jq .result.sync_info\e[m"
-
+echo -e "To check sync status: \tcurl -s localhost:${rpc_port}/status | jq .result.sync_info"
+echo -e ""$bline"\e[m"

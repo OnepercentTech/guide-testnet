@@ -100,7 +100,7 @@ sleep 2
 
 # Init testnet
 if [[ $join_test == true ]]; then
-  $bin_name init "$nodename" --chain-id $testnet_chain_id --home $chain_dir 2>&1 >/dev/null
+  $bin_name init "$nodename" --chain-id $testnet_chain_id --home $chain_dir >/dev/null 2>&1
   curl -sSL $testnet_genesis -o $chain_dir/config/genesis.json
   sed -i -e "s/^seeds *=.*/seeds = \"$testnet_seeds\"/; s/^persistent_peers *=.*/persistent_peers = \"$testnet_peers\"/" $chain_dir/config/config.toml
   sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$testnet_denom\"/" $chain_dir/config/app.toml
@@ -111,7 +111,7 @@ if [[ $join_test == true ]]; then
   fi
 # Init mainnet
 elif [[ $join_main == true ]]; then
-  $bin_name init "$nodename" --chain-id $mainnet_chain_id --home $chain_dir 2>&1 >/dev/null
+  $bin_name init "$nodename" --chain-id $mainnet_chain_id --home $chain_dir >/dev/null 2>&1
   curl -sSL $mainnet_genesis -o $chain_dir/config/genesis.json
   sed -i -e "s/^seeds *=.*/seeds = \"$mainnet_seeds\"/; s/^persistent_peers *=.*/persistent_peers = \"$mainnet_peers\"/" $chain_dir/config/config.toml
   sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$mainnet_denom\"/" $chain_dir/config/app.toml
@@ -127,13 +127,13 @@ pruning="custom"
 pruning_keep_recent="100"
 pruning_keep_every="500"
 pruning_interval="50"
-sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $chain_dir/config/app.toml 2>&1 >/dev/null
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $chain_dir/config/app.toml 2>&1 >/dev/null
-sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $chain_dir/config/app.toml 2>&1 >/dev/null
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $chain_dir/config/app.toml 2>&1 >/dev/null
-sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:$abci_port\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://0.0.0.0:$rpc_port\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:$pprof_port\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:$p2p_port\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":$prometheus_port\"%" $chain_dir/config/config.toml 2>&1 >/dev/null
-sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:$api_port\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:$grpc_port\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:$grpc_web_port\"%" $chain_dir/config/app.toml 2>&1 >/dev/null
-$bin_name tendermint unsafe-reset-all --home $chain_dir 2>&1 >/dev/null
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $chain_dir/config/app.toml >/dev/null 2>&1
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $chain_dir/config/app.toml >/dev/null 2>&1
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $chain_dir/config/app.toml >/dev/null 2>&1
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $chain_dir/config/app.toml >/dev/null 2>&1
+sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:$abci_port\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://0.0.0.0:$rpc_port\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:$pprof_port\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:$p2p_port\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":$prometheus_port\"%" $chain_dir/config/config.toml >/dev/null 2>&1
+sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:$api_port\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:$grpc_port\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:$grpc_web_port\"%" $chain_dir/config/app.toml >/dev/null 2>&1
+$bin_name tendermint unsafe-reset-all --home $chain_dir >/dev/null 2>&1
 
 echo -e "\t✅️"
 sleep 2
@@ -141,9 +141,9 @@ sleep 2
 # Create service with cosmovisor
 if [[ $with_cosmovisor == "true" ]]; then
 
-  mkdir -p $chain_dir/cosmovisor/genesis/bin/ 2>&1 >/dev/null
-  mkdir -p $chain_dir/cosmovisor/upgrades/ 2>&1 >/dev/null
-  cp $(which $bin_name) $chain_dir/cosmovisor/genesis/bin/ 2>&1 >/dev/null
+  mkdir -p $chain_dir/cosmovisor/genesis/bin/ >/dev/null 2>&1
+  mkdir -p $chain_dir/cosmovisor/upgrades/ >/dev/null 2>&1
+  cp $(which $bin_name) $chain_dir/cosmovisor/genesis/bin/ >/dev/null 2>&1
 
 sudo tee /etc/systemd/system/$bin_name.service > /dev/null <<EOF
 [Unit]

@@ -27,7 +27,7 @@ rm "go$ver.linux-amd64.tar.gz" >/dev/null 2>&1
 echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
 echo "export GOROOT=/usr/local/go" >> ~/.bash_profile
 source ~/.bash_profile >/dev/null 2>&1
-sudo curl "https://get.ignite.com/cli!" | sudo bash >/dev/null 2>&1
+sudo curl -s "https://get.ignite.com/cli!" | sudo bash >/dev/null 2>&1
 echo "✅️"
 sleep 1
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
 if [[ $(type jq curl 2>&1 >/dev/null) ]]; then
-  apt update && apt install curl jq -y
+  sudo apt update >/dev/null 2>&1 && sudo apt install jq curl -y >/dev/null 2>&1
 fi
 echo -e "\e[96m"
 ##########################################################
@@ -116,9 +116,9 @@ while true; do
 		cosmovisorOpt
 		read i
 		case $i in
-		  [1] ) join_main=true; with_cosmovisor=true
+		  [1] ) join_test=true; with_cosmovisor=true
 			runStart; break;;
-		  [2] ) join_main=true; runStart; break;;
+		  [2] ) join_test=true; runStart; break;;
 		  [3] ) break;;
 		  [0] ) exit 1;;
 		   *  ) clear;;
