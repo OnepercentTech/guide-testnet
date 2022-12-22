@@ -27,7 +27,7 @@ Untuk saat ini kita menggunakan infura untuk ethereum clienntnya
 ![img](./img/goerli-ws.png)
 
 ## Deploy node operator safestake
-###### Catatan: Untuk menjalankan validator client harus terhubung ke beacon-node consensus client seperti lighthouse yang telah disinkronkan sepenuhnya. Dan untuk menjalankan beacon node consensus client perlu terhubung ke execution client yang telah syncron sepenuhnya
+###### Catatan: Untuk menjalankan validator client harus terhubung ke beacon-node consensus client seperti lighthouse yang telah disinkronkan sepenuhnya. Dan untuk menjalankan beacon node consensus client perlu terhubung ke execution client seperti geth yang telah syncron sepenuhnya
 ###### Catatan: Tapi disini kita tidak akan run geth execution dan lighthouse beacon-node consensus client
 ###### Catatan: Karna operator safestake validator clientnya dari lighthouse, Jadi kita hanya perlu menghubungkan operator ke beacon node consensus client yang sudah sinkron sepenuhnya, disini saya punya sekitar 18 peer beacon node lighthouse dengan versi yang sama dengan dvf validator client safestake, akan tetapi mungkin saja suatu saat salah satu atau semua peernya mati
 #### 1. Buat direktori operator
@@ -201,3 +201,4 @@ curl --upload-file validator_keys.zip https://transfer.sh
 
 ##### 8. Validator anda akan aktif di beacon node setelah deposit dan menunggu 14-24 jam, jika validator sudah aktif dibeacon node, cek operator anda di safestake explorers
 * Safestake explorer: https://explorer-testnet.safestake.xyz/operators
+# Dah segitu aja maaf kalo tutornya membingungkan 😆
