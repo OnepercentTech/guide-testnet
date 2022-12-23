@@ -202,3 +202,78 @@ curl --upload-file validator_keys.zip https://transfer.sh
 ##### 8. Validator anda akan aktif di beacon node setelah deposit dan menunggu 14-24 jam, jika validator sudah aktif dibeacon node, cek operator anda di safestake explorers
 * Safestake explorer: https://explorer-testnet.safestake.xyz/operators
 # Dah segitu aja maaf kalo tutornya membingungkan 😆
+## Script auto refresh peers dan auto restart jika node stuck
+```
+cd $HOME/safestake
+touch refresh_peers.sh
+chmod +x refresh_peers.sh
+nano refresh_peers.sh
+
+```
+
+## Tempel SCnya
+```
+#!/bin/bash
+cd $HOME/safestake
+activePeers(){
+    source .env
+    peer_list=(`echo -n $bn | tr "," " "`)
+    list=${#peer_list[@]}
+    echo -e "Total active peers: $list\t✅️"
+}
+restartNode(){
+    check_log=$(docker-compose logs --since 5m | tail -1)
+    if [[ -z ${check_log} ]]; then
+        sudo docker-compose down && sudo docker-compose up -d
+        echo Node restared
+    fi
+}
+
+while true; do
+    source .env
+    echo -e "\nFetching peers"
+    current_peer=(`echo -n $bn | tr "," " "`)
+    for (( x=0; x<${#current_peer[@]}; x++ )); do
+        if [[ ! $(curl -s --connect-timeout 0.25 ${current_peer[$x]} 2>&1) ]]; then
+            echo -e "\nDeleting inactive peers"
+            source .env
+            if [[ $(grep -ow `echo -n ${current_peer[$x]},` .env) ]]; then
+                sed -i 's|'${current_peer[$x]}'||' .env
+            else
+                sed -i 's|'${current_peer[$x]}',||' .env
+            fi
+            echo -n -e "Peer: ${current_peer[$x]} deleted\t❌\t️"
+            activePeers
+            echo -e "\nFetching peers"
+        fi
+        active_peer=(`echo -n $bn | tr "," " "`)
+        peers=(`curl -s ${active_peer[$x]}/lighthouse/peers/connected | jq -r '.[].peer_info | select(.client.kind=="Lighthouse") | select(.client.version=="v3.1.0-aa022f4") | .seen_addresses[]' | sed 's|:.*|:5052|g' | awk '{print "http://"$0}' | awk '!seen[$0]++'`)
+        for (( i=0; i<${#peers[@]}; i++ )); do
+            if [[ $(curl -s --connect-timeout 0.25 ${peers[$i]} 2>&1) ]]; then
+                if [[ $(curl -s ${peers[$i]}/lighthouse/syncing | jq -r '.data') == "Synced" ]]; then
+                    if [[ ! $(grep -ow `echo -n ${peers[$i]}` .env 2>&1) ]]; then
+                        sed -i 's|bn=.*|bn='$bn','${peers[$i]}'|g' .env
+                        echo -n -e "New peer: ${peers[$i]} \t✅️\t"
+                        activePeers
+                    fi
+                fi
+            fi
+        done
+    done; restartNode
+done >refresh_peers.log 2>&1 &
+```
+
+## Run SCnya
+```
+cd $HOME/safestake
+./refresh_peers.sh
+
+```
+
+## Cek lognya
+```
+cd $HOME/safestake
+tail -f refresh_peers.sh
+
+```
+
