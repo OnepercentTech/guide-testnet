@@ -46,7 +46,7 @@ sudo apt update && sudo apt upgrade -y
 ```
 sudo apt autoremove docker* container* -y
 sudo apt install jq curl wget tar zip unzip -y
-curl -sSL https://get.docker com | bash -
+curl -sSL https://get.docker.com | bash -
 sudo curl -SL https://github.com/docker/compose/releases/download/v2.14.2/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose /usr/bin/docker-compose
