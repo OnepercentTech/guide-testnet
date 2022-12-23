@@ -57,7 +57,7 @@ sudo systemctl restart docker.service
 #### 4. Buat konfigurasi docker compose
 ###### 1. Buat direktori safestake
 ```
-mkdir -p $HONE/safestake
+mkdir -p $HOME/safestake
 
 ```
 
