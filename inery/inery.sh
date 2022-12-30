@@ -155,10 +155,11 @@ import_wallet(){
 
 reg_producer(){
     cline wallet unlock -n $IneryAccname --password $(cat $HOME/$IneryAccname.txt)
-    cline system regproducer $IneryAccname $IneryPubkey 0.0.0.0:9010
+    cline master bind $IneryAccname $IneryPubkey ${address}:9010
+    sleep 1
+    cline master approve $IneryAccname
     echo -e ""$kuning""$bold"Reg producer success $reset"
     sleep 0.5
-    cline system makeprod approve $IneryAccname $IneryAccname
     echo -e ""$kuning""$bold"Approve producer success $reset"
     sleep 0.5
 }
@@ -188,8 +189,8 @@ sleep 1
 
 cd $HOME
 pnodine=$(pgrep nodine)
-if [[ $pnodine ]]; then
-    pkill -9 nodine
+if [[ -n $pnodine ]]; then
+    pkill nodine
 fi
 rm -rf inery-*
 git clone https://github.com/inery-blockchain/inery-node
@@ -300,8 +301,7 @@ if [[ -d $HOME/inery-wallet && $IneryAccname && $IneryPubkey ]]; then
 else
         echo -e ""$bold""$merah"No wallet in local machine found"
         echo -e ""$bold""$kuning"First create wallet and set as env vars"
-        set_account_name
-        set_pubkey
+        set_account
         set_privkey
 	import_wallet
 	reg_producer
@@ -364,30 +364,14 @@ tx_issue_confirmation=$(cline get currency stats inery.token $symbol | jq -r .$s
         break
     fi
 done
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[0]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[1]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[2]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[3]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[4]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[5]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[6]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[7]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[8]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[9]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[10]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[11]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[12]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[13]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[14]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[15]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[16]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[17]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[18]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[19]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
-            echo -e "Token succesfully transfered to ${#acc_list[*]} account"
-            for list in ${!acc_list[*]}; do
-	    printf "%4d: %s\n" $list ${acc_list[$list]}
-	    done
+for (( i=0; i<${#acc_list[@]}; i++ )); do
+    cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[$i]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+    sleep 1
+done
+echo -e "Token succesfully transfered to ${#acc_list[*]} account"
+for list in ${!acc_list[*]}; do
+printf "%4d: %s\n" $list ${acc_list[$list]}
+done
 }
 
 cd $HOME
