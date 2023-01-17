@@ -111,7 +111,6 @@ done
 }
 
 address="$(curl -s ifconfig.me)"
-}
 # Import wallet
 
 import_wallet(){
