@@ -110,38 +110,7 @@ done
 
 }
 
-set_peers(){
-
-default_ip=$(curl -s ifconfig.me)
-ipaddress="$bold""$hijau"ip-address"$reset"
-enter_ip="Masukan public "$hijau" $ipaddress: "
-while true; do
-echo -e "$bline\n"
-echo -e "$bold""$kuning"INFO: "$reset"Your IP in this machine is: "$bold""$hijau""$default_ip$reset\n"
-echo -e "$bline"
-read -p "$(printf "$enter_ip""$reset")" address
-echo -e "$bline\n"
-    if [[ ! $address =~ ^[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}$ ]]; then
-        echo -e "$bold$ipaddress $address" "$invalid_format"
-        enter_ip="Tolong masukan yang benar public $ipaddress: $reset"
-    else
-	while true; do
-        echo -e -n "Apakah $ipaddress "$format""$address"$reset sudah benar? [Y/n]"
-        read yn
-        case $yn in
-            [Yy]* ) printf "\n"; ADDR=true; break;;
-            [Nn]* ) printf "\n"; ADDR=false; break;;
-            * ) echo -e "$invalid_input"; echo -e "$bline\n";;
-        esac
-        done
-        if [[ $ADDR = true ]]; then
-            break
-	else
-	    enter_ip="Masukan public $ipaddress lagi: "
-        fi
-    fi
-done
-
+address="$(curl -s ifconfig.me)"
 }
 # Import wallet
 
@@ -155,6 +124,7 @@ import_wallet(){
 
 reg_producer(){
     cline wallet unlock -n $IneryAccname --password $(cat $HOME/$IneryAccname.txt)
+    cline master unapprove $IneryAccname
     cline master bind $IneryAccname $IneryPubkey ${address}:9010
     sleep 1
     cline master approve $IneryAccname
