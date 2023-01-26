@@ -10,90 +10,120 @@
 - **Kalo udah di truein restart nodenya**
 ## Install paket yang di butihkan
 ```
-sudo apt update && sudo apt upgrade -y
-sudo apt install nginx certbot python3-certbot-nginx -y
+sudo apt autoremove nodejs -y
 curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-sudo apt-get update && apt install -y nodejs git
 curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | sudo tee /usr/share/keyrings/yarnkey.gpg >/dev/null
 echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt-get update && sudo apt-get install yarn -y
+sudo apt update
+sudo apt install nginx certbot python3-certbot-nginx nodejs git yarn -y 
 
 ```
+
+
 ## reverse proxy nginx + install ssl
+
 ##### 1. Config API
+- `API` Domain
 ```
-nano /etc/nginx/sites-enabled/<YOUR.API.SUBDOMAIN.SITE>.conf
+API_DOMAIN=<ISI_NAMA_DOMAIN_API>
 ```
-##### 2. Copy seperti di bawah ini
+
+- `API` IP Port
 ```
+API_IP_PORT:<IP:PORT> #ISI IP PORT API
+```
+
+- `RPC` Domain
+```
+RPC_DOMAIN=<ISI_NAMA_DOMAIN_RPC>
+```
+
+- `RPC` IP port
+```
+RPC_IP_PORT:<IP:PORT> #ISI IP PORT RPC
+```
+
+- `Explorer` Domain
+```
+EXPLORER_DOMAIN:<NAMA_DOMAIN_EXPLORER> #ISI NAMA EXPLORER DOMAIN
+```
+- ** `ISI SEMUA VARIABLE DI ATAS` **
+
+
+##### 2. Copy Konfigurasi `API` dan pastekan di terminal
+```
+sudo cat <<EOF > /etc/nginx/sites-enabled/${API_DOMAIN}.conf
 server {
-    server_name YOUR.API.SUBDOMAIN.SITE;
+    server_name $API_DOMAIN;
     listen 80;
     location / {
         add_header Access-Control-Allow-Origin *;
         add_header Access-Control-Max-Age 3600;
         add_header Access-Control-Expose-Headers Content-Length;
 
-	proxy_set_header   X-Real-IP        $remote_addr;
-        proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
-        proxy_set_header   Host             $host;
+	proxy_set_header   X-Real-IP        \$remote_addr;
+        proxy_set_header   X-Forwarded-For  \$proxy_add_x_forwarded_for;
+        proxy_set_header   Host             \$host;
 
-        proxy_pass http://YOUR_API_NODE_IP:1337;
+        proxy_pass http://$API_IP_PORT;
 
     }
 }
+EOF
 
 ```
-- ** `YOUR.API.SUBDOMAIN.SITE` ganti dengan subdomain api anda `http://YOUR_API_NODE_IP:1337` ganti dengan ip node dan port apinya sesuaikan yg di node**
-##### 3. Config RPC
+
+
+##### 4. Copy konfigurasi `RPC` dan pastekan di terminal
 ```
-nano /etc/nginx/sites-enabled/<YOUR.RPC.SUBDOMAIN.SITE>.conf
-```
-##### 4. Copy seperti di bawah ini:
-```
+sudo cat <<EOF > /etc/nginx/sites-enabled/${RPC_DOMAIN}.conf
 server {
-    server_name YOUR.RPC.SUBDOMAIN.SITE;
+    server_name $RPC_DOMAIN;
     listen 80;
     location / {
         add_header Access-Control-Allow-Origin *;
         add_header Access-Control-Max-Age 3600;
         add_header Access-Control-Expose-Headers Content-Length;
 
-	proxy_set_header   X-Real-IP        $remote_addr;
-        proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
-        proxy_set_header   Host             $host;
+	proxy_set_header   X-Real-IP        \$remote_addr;
+        proxy_set_header   X-Forwarded-For  \$proxy_add_x_forwarded_for;
+        proxy_set_header   Host             \$host;
+	
+	proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection "upgrade";
 
-        proxy_pass http://YOUR_RPC_NODE_IP:26657;
+        proxy_pass http://$RPC_IP_PORT;
 
     }
 }
+EOF
 
 ```
-- ** `YOUR.RPC.SUBDOMAIN.SITE` ganti dengan subdomain rpc anda, `http://YOUR_API_NODE_IP:26657` ganti dengan ip node dan port rpcnya sesuaikan yg di node**
 ##### 5. configurasi expolrer**
 
 ```
-cp ~/explorer/ping.conf /etc/nginx/sites-enabled/<DOMAIN_EXPLORER>.conf
+wget https://raw.githubusercontent.com/ping-pub/explorer/master/ping.conf -O /etc/nginx/sites-enabled/${EXPLORER_DOMAIN}
 ```
 
-**ubah `<DOMAIN_EXPLORER>.conf` jadi domain explorer anda contoh `explorer.jembutmerah.dev`**
-
 ```
-nano /etc/nginx/sites-enabled/<DOMAIN_EXPLORER>.conf
+sudo sed -i "s|server_name  _'|$EXPLORER_DOMAIN|"  /etc/nginx/sites-enabled/<EXPLORER_DOMAIN>.conf
 ```
 
-**Ubah nilai servername dari `_` domain explorer anda contoh `explorer.jembutmerah.dev`**
 ##### Test configurasi
 ```
+sudo pkill nginx
 nginx -t 
 ```
+
 - ** Jika konfigurasinya benar seperti ini**
 `nginx: the configuration file /etc/nginx/nginx.conf syntax is ok`
 `nginx: configuration file /etc/nginx/nginx.conf test is successful`
+
 ##### Install ssl sertifikat
 ```
 sudo certbot --nginx --register-unsafely-without-email
-sudo certbot --nginx --redirect
+sudo certbot --nginx --redirect -d ${API_DOMAIN},${RPC_DOMAIN},${EXPLORER_DOMAIN}
 
 ```
 
@@ -142,8 +172,7 @@ yarn && yarn build
 ##### 5. Hosting
 ```
 cp -r $HOME/explorer/dist/* /usr/share/nginx/html
-sudo systemctl restart nginx
-
+nginx -s reload
 ```
 ###### Special thanks to
 **ping.pub** https://github.com/ping-pub/explorer
