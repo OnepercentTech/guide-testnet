@@ -134,11 +134,6 @@ cd ~
 git clone https://github.com/ping-pub/explorer
 
 ```
-##### 2. (Optional) Hapus semua konfigurasi yang ada
-```
-rm -rf ~/explorer/src/chains/mainnet/*
-
-```
 ##### 3. Tambahkan konfig sendiri
 ```7
 nano ~/explorer/src/chains/mainnet/<CHAIN_NAME>.json
