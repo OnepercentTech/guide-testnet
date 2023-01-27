@@ -103,7 +103,7 @@ EOF
 ##### 5. configurasi expolrer**
 
 ```
-wget https://raw.githubusercontent.com/ping-pub/explorer/master/ping.conf -O /etc/nginx/sites-enabled/${EXPLORER_DOMAIN}
+wget https://raw.githubusercontent.com/ping-pub/explorer/master/ping.conf -O /etc/nginx/sites-enabled/${EXPLORER_DOMAIN}.conf
 ```
 
 ```
