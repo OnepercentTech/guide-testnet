@@ -25,27 +25,27 @@ sudo apt install nginx certbot python3-certbot-nginx nodejs git yarn -y
 ##### 1. Config API
 - `API` Domain
 ```
-API_DOMAIN=<ISI_NAMA_DOMAIN_API>
+API_DOMAIN="<ISI_NAMA_DOMAIN_API>"
 ```
 
 - `API` IP Port
 ```
-API_IP_PORT:<IP:PORT> #ISI IP PORT API
+API_IP_PORT="<IP:PORT>" #ISI IP PORT API
 ```
 
 - `RPC` Domain
 ```
-RPC_DOMAIN=<ISI_NAMA_DOMAIN_RPC>
+RPC_DOMAIN="<ISI_NAMA_DOMAIN_RPC>"
 ```
 
 - `RPC` IP port
 ```
-RPC_IP_PORT:<IP:PORT> #ISI IP PORT RPC
+RPC_IP_PORT="<IP:PORT>" #ISI IP PORT RPC
 ```
 
 - `Explorer` Domain
 ```
-EXPLORER_DOMAIN:<NAMA_DOMAIN_EXPLORER> #ISI NAMA EXPLORER DOMAIN
+EXPLORER_DOMAIN="<NAMA_DOMAIN_EXPLORER>" #ISI NAMA EXPLORER DOMAIN
 ```
 - ** `ISI SEMUA VARIABLE DI ATAS` **
 
@@ -107,7 +107,7 @@ wget https://raw.githubusercontent.com/ping-pub/explorer/master/ping.conf -O /et
 ```
 
 ```
-sudo sed -i "s|server_name  _'|$EXPLORER_DOMAIN|"  /etc/nginx/sites-enabled/<EXPLORER_DOMAIN>.conf
+sudo sed -i "s|server_name  _|$EXPLORER_DOMAIN|"  /etc/nginx/sites-enabled/${EXPLORER_DOMAIN}.conf
 ```
 
 ##### Test configurasi
