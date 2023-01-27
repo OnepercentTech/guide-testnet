@@ -107,7 +107,7 @@ wget https://raw.githubusercontent.com/ping-pub/explorer/master/ping.conf -O /et
 ```
 
 ```
-sudo sed -i "s|server_name  _|$EXPLORER_DOMAIN|"  /etc/nginx/sites-enabled/${EXPLORER_DOMAIN}.conf
+sudo sed -i "s|server_name  _|server_name $EXPLORER_DOMAIN|"  /etc/nginx/sites-enabled/${EXPLORER_DOMAIN}.conf
 ```
 
 ##### Test configurasi
