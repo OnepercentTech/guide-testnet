@@ -18,6 +18,7 @@ format=""$bold""$UL""$hijau""
 continue=""$hijau""$bold"Tekan enter untuk melanjutkan"$reset""
 bline="======================================================================="
 script_config='--max-clients 100 \\\n--sync-fetch-span 100 \\\n--p2p-peer-address dev-test2.inery.network:9010 \\\n--p2p-peer-address dev-test3.inery.network:9010 \\\n--p2p-peer-address dev-test4.inery.network:9010 \\\n--p2p-peer-address dev-test5.inery.network:9010 \\\n--p2p-peer-address bis.blockchain-servers.world:9010 \\\n--p2p-peer-address sys.blockchain-servers.world:9010 \\'
+rpc="http://tas.blockchain-servers.world:8888"
 
 if ! [[ $(type nodine 2> /dev/null) ]]; then
     echo -e 'export PATH="$PATH":"$HOME"/inery-node/inery/bin' >> $HOME/.bash_profile
@@ -115,18 +116,21 @@ address="$(curl -s ifconfig.me)"
 
 import_wallet(){
     rm -rf $HOME/inery-wallet
-    cd; cline wallet create -n $name --file $HOME/$name.txt
-    cline wallet import -n $name --private-key $privkey
+    cd; cline -u $rpc wallet create -n $name --file $HOME/$name.txt
+    cline -u $rpc wallet import -n $name --private-key $privkey
 }
 
 # reg_producer
 
 reg_producer(){
-    cline wallet unlock -n $IneryAccname --password $(cat $HOME/$IneryAccname.txt)
-    cline master unapprove $IneryAccname
-    cline master bind $IneryAccname $IneryPubkey ${address}:9010
-    sleep 1
-    cline master approve $IneryAccname
+    cline -u $rpc wallet unlock -n $IneryAccname --password $(cat $HOME/$IneryAccname.txt)
+    cline -u $rpc master unapprove $IneryAccname
+    sleep 5
+    cline -u $rpc master unbind $IneryAccname
+    sleep 5
+    cline -u $rpc master bind $IneryAccname $IneryPubkey ${address}:9010
+    sleep 5
+    cline -u $rpc master approve $IneryAccname
     echo -e ""$kuning""$bold"Reg producer success $reset"
     sleep 0.5
     echo -e ""$kuning""$bold"Approve producer success $reset"
@@ -288,18 +292,18 @@ create_test_token(){
 
     cd $HOME
     rm -f token.wasm token.abi
-    cline get code inery.token -c token.wasm -a token.abi --wasm
+    cline -u $rpc get code inery.token -c token.wasm -a token.abi --wasm
     if [[ -f /tmp/acclist ]]; then
         rm -rf /tmp/acclist > /dev/null
     fi
     echo -e "inery\ninery.token\njambul.inery" >/tmp/acclist
     tail -n 1000 $inerylog | grep "signed by" | awk '{printf "\n"$15}' | sed -e 's/2022-*.*//g;/^$/d' | tail -17 >> /tmp/acclist
     mapfile -t acc_list </tmp/acclist
-    cline wallet unlock -n $IneryAccname --password $(cat $IneryAccname.txt)
-    cline set code $IneryAccname token.wasm
+    cline -u $rpc wallet unlock -n $IneryAccname --password $(cat $IneryAccname.txt)
+    cline -u $rpc set code $IneryAccname token.wasm
     echo -e ""$kuning""$bold"Set code success$reset"
     sleep 0.5
-    cline set abi $IneryAccname token.abi
+    cline -u $rpc set abi $IneryAccname token.abi
     echo -e ""$kuning""$bold"Set abi success$reset"
     echo
     symbol_name=""$kuning""$bold"Set your token symbol: $reset"
@@ -311,8 +315,8 @@ create_test_token(){
         fi
     done
 while true; do
-cline push action inery.token create '["'"$IneryAccname"'", "'"50000.0000 $symbol"'", "creating 50000 max supply"]' -p $IneryAccname
-tx_confirmation=$(cline get currency stats inery.token $symbol | jq -r .$symbol.issuer)
+cline -u $rpc push action inery.token create '["'"$IneryAccname"'", "'"50000.0000 $symbol"'", "creating 50000 max supply"]' -p $IneryAccname
+tx_confirmation=$(cline -u $rpc get currency stats inery.token $symbol | jq -r .$symbol.issuer)
     if [ ! $tx_confirmation = $IneryAccname ]; then
         printf "\n$kuning$bold Wait tx confirmation create token symbol $symbol$reset\n"
         sleep 1
@@ -323,8 +327,8 @@ tx_confirmation=$(cline get currency stats inery.token $symbol | jq -r .$symbol.
 done
 
 while true; do
-cline push action inery.token issue '["'"$IneryAccname"'", "'"10000.0000 $symbol"'", "issuing 1000 in circulating supply"]' -p $IneryAccname
-tx_issue_confirmation=$(cline get currency stats inery.token $symbol | jq -r .$symbol.supply | awk '{printf $1}' | sed 's/\.0000//')
+cline -u $rpc push action inery.token issue '["'"$IneryAccname"'", "'"10000.0000 $symbol"'", "issuing 1000 in circulating supply"]' -p $IneryAccname
+tx_issue_confirmation=$(cline -u $rpc get currency stats inery.token $symbol | jq -r .$symbol.supply | awk '{printf $1}' | sed 's/\.0000//')
     if [ ! $tx_issue_confirmation = 10000 ]; then
         printf "\n$kuning$bold Wait tx confirmation issue supply token $symbol$reset\n"
         sleep 1
@@ -334,7 +338,7 @@ tx_issue_confirmation=$(cline get currency stats inery.token $symbol | jq -r .$s
     fi
 done
 for (( i=0; i<${#acc_list[@]}; i++ )); do
-    cline push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[$i]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
+    cline -u $rpc push action inery.token transfer '["'"$IneryAccname"'", "'"${acc_list[$i]}"'", "'"1.0000 $symbol"'", "Here you go 10 from me 😁"]' -p $IneryAccname
     sleep 1
 done
 echo -e "Token succesfully transfered to ${#acc_list[*]} account"
